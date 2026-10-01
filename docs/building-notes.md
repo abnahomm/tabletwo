@@ -40,3 +40,22 @@ from this step i learned:
 - how to group multiple items in a list
 - how to loop through a list with a `for` loop
 - how to write a function that filters data
+
+## step 4 - adding scores
+
+i changed the restaurant logic so it does not just say match or no match anymore.
+
+each restaurant now gets points based on how well it fits what the user wants.
+
+for example, matching the cuisine and vibe gives more points, while being within budget and having a high rating also adds points.
+
+after that, the restaurants are sorted from highest score to lowest.
+
+i did it this way because a place can still be a good option even if it does not match every single preference.
+
+## what i learned
+
+- how to make one function handle scoring
+- how to pass values between functions
+- how to sort data based on a score
+- how recommendation systems can rank choices instead of only filtering them
