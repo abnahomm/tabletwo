@@ -289,3 +289,16 @@ the links are built using the restaurant name and location so the user can quick
 - how to build dynamic urls with python
 - how to format text safely for a url
 - how to connect recommendation results to other platforms
+
+## step 21 - starting the web backend
+
+i started turning tabletwo from a terminal program into a web app by setting up a fastapi backend.
+
+i created basic endpoints and ran the backend on a local server to make sure the api was working.
+
+## what i learned
+
+- what a backend api does
+- how to create api endpoints with fastapi
+- how to run a local web server
+- how a frontend will eventually communicate with python
