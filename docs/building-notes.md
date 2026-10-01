@@ -239,3 +239,17 @@ right now the score uses rating and how well the restaurant's price matches the 
 - how to score real api data
 - how to sort restaurants by score
 - how to show why a restaurant ranked higher
+
+## step 17 - adding vibe to real restaurants
+
+i started connecting the vibe system to real yelp results.
+
+i use restaurant categories like sports bars, lounges, cafes, and cocktail bars to estimate different vibes.
+
+this is still a basic version, but it lets real restaurants start getting vibe points.
+
+## what i learned
+
+- how to turn api categories into my own data
+- how to add custom tags to real restaurant results
+- how to combine api data with my own recommendation logic

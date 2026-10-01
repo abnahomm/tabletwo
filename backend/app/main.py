@@ -34,6 +34,16 @@ vibe_groups = {
     "sports": ["sports", "game", "bar", "lively", "casual"]
 }
 
+category_vibes = {
+    "sports bars": ["sports", "lively", "casual"],
+    "cocktail bars": ["upscale", "romantic", "lively"],
+    "wine bars": ["romantic", "upscale", "chill"],
+    "lounges": ["romantic", "upscale", "chill"],
+    "bars": ["lively", "casual", "chill"],
+    "cafes": ["chill", "casual", "cozy"],
+    "desserts": ["romantic", "casual", "chill"]
+}
+
 def score_restaurant(restaurant, preferred_cuisine, max_price, preferred_vibe):
     score = 0
     reasons = []
@@ -127,20 +137,29 @@ real_restaurants = search_restaurants(
 converted_restaurants = []
 
 for restaurant in real_restaurants:
+    categories = [
+        category["title"].lower()
+        for category in restaurant["categories"]
+    ]
+
+    restaurant_vibes = []
+
+    for category in categories:
+        if category in category_vibes:
+            restaurant_vibes.extend(category_vibes[category])
+
     converted_restaurant = {
         "name": restaurant["name"],
         "rating": restaurant["rating"],
         "price": restaurant.get("price", "not listed"),
         "price_level": len(restaurant.get("price", "")),
-        "categories": [
-            category["title"].lower()
-            for category in restaurant["categories"]
-        ],
+        "categories": categories,
+        "vibes": restaurant_vibes,
         "address": ", ".join(
             restaurant["location"]["display_address"]
-        ),
-        "url": restaurant["url"]
-    }
+    ),
+    "url": restaurant["url"]
+}
 
     converted_restaurants.append(converted_restaurant)
     filtered_restaurants = []
@@ -175,6 +194,22 @@ for restaurant in filtered_restaurants:
     if restaurant["price_level"] == max_price:
         score += 2
         reasons.append("matches budget")
+    
+        matched_vibe = False
+
+    for group, related_words in vibe_groups.items():
+        if preferred_vibe.lower() in related_words:
+            for restaurant_vibe in restaurant["vibes"]:
+                if restaurant_vibe in related_words:
+                    matched_vibe = True
+                    break
+
+        if matched_vibe:
+            break
+
+    if matched_vibe:
+        score += 3
+        reasons.append("matches vibe")
 
     restaurant["score"] = score
     restaurant["reasons"] = reasons
