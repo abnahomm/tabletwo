@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./App.css";
 
 type Restaurant = {
   name: string;
@@ -53,93 +54,112 @@ function App() {
   }
 
   return (
-    <main>
-      <h1>tabletwo</h1>
+    <main className="page">
+      <section className="hero">
+        <p className="eyebrow">date night, simplified</p>
 
-      <p>find a date night spot without checking five different apps</p>
+        <h1>tabletwo</h1>
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>city</label>
-          <input
-            type="text"
-            value={location}
-            onChange={(event) => setLocation(event.target.value)}
-            placeholder="orlando, fl"
-            required
-          />
-        </div>
+        <p className="subtitle">
+          find a place to eat without checking five different apps
+        </p>
 
-        <div>
-          <label>food</label>
-          <input
-            type="text"
-            value={cuisine}
-            onChange={(event) => setCuisine(event.target.value)}
-            placeholder="japanese"
-            required
-          />
-        </div>
+        <form className="search-form" onSubmit={handleSubmit}>
+          <div className="field">
+            <label>city</label>
+            <input
+              type="text"
+              value={location}
+              onChange={(event) => setLocation(event.target.value)}
+              placeholder="orlando, fl"
+              required
+            />
+          </div>
 
-        <div>
-          <label>budget</label>
-          <select
-            value={maxPrice}
-            onChange={(event) => setMaxPrice(event.target.value)}
-          >
-            <option value="1">$</option>
-            <option value="2">$$</option>
-            <option value="3">$$$</option>
-          </select>
-        </div>
+          <div className="field">
+            <label>food</label>
+            <input
+              type="text"
+              value={cuisine}
+              onChange={(event) => setCuisine(event.target.value)}
+              placeholder="japanese"
+              required
+            />
+          </div>
 
-        <div>
-          <label>vibe</label>
-          <input
-            type="text"
-            value={vibe}
-            onChange={(event) => setVibe(event.target.value)}
-            placeholder="romantic, chill, lively..."
-            required
-          />
-        </div>
-
-        <button type="submit">
-          {loading ? "searching..." : "find restaurants"}
-        </button>
-      </form>
-
-      {error && <p>{error}</p>}
-
-      <section>
-        {restaurants.map((restaurant) => (
-          <article key={restaurant.yelp_url}>
-            <h2>{restaurant.name}</h2>
-
-            <p>
-              {restaurant.rating} stars · {restaurant.price}
-            </p>
-
-            <p>{restaurant.address}</p>
-
-            <p>match score: {restaurant.score}</p>
-
-            <ul>
-              {restaurant.reasons.map((reason) => (
-                <li key={reason}>{reason}</li>
-              ))}
-            </ul>
-
-            <a
-              href={restaurant.yelp_url}
-              target="_blank"
-              rel="noreferrer"
+          <div className="field">
+            <label>budget</label>
+            <select
+              value={maxPrice}
+              onChange={(event) => setMaxPrice(event.target.value)}
             >
-              view on yelp
-            </a>
-          </article>
-        ))}
+              <option value="1">$</option>
+              <option value="2">$$</option>
+              <option value="3">$$$</option>
+            </select>
+          </div>
+
+          <div className="field">
+            <label>vibe</label>
+            <input
+              type="text"
+              value={vibe}
+              onChange={(event) => setVibe(event.target.value)}
+              placeholder="romantic, chill, lively..."
+              required
+            />
+          </div>
+
+          <button type="submit" className="search-button">
+            {loading ? "searching..." : "find restaurants"}
+          </button>
+        </form>
+
+        {error && <p className="error">{error}</p>}
       </section>
+
+      {restaurants.length > 0 && (
+        <section className="results">
+          <div className="results-heading">
+            <h2>your matches</h2>
+            <p>{restaurants.length} restaurants found</p>
+          </div>
+
+          <div className="restaurant-grid">
+            {restaurants.map((restaurant) => (
+              <article className="restaurant-card" key={restaurant.yelp_url}>
+                <div className="card-top">
+                  <div>
+                    <h3>{restaurant.name}</h3>
+                    <p className="meta">
+                      {restaurant.rating} ★ · {restaurant.price}
+                    </p>
+                  </div>
+
+                  <span className="score">{restaurant.score}</span>
+                </div>
+
+                <p className="address">{restaurant.address}</p>
+
+                <div className="reasons">
+                  {restaurant.reasons.map((reason) => (
+                    <span key={reason}>{reason}</span>
+                  ))}
+                </div>
+
+                <a
+                  className="yelp-link"
+                  href={restaurant.yelp_url}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  view on yelp
+                </a>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
     </main>
   );
 }

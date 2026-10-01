@@ -362,3 +362,16 @@ i also added loading and error handling so the page can handle the request prope
 - how to read json in the frontend
 - how to display api results with react
 - why cors is needed when frontend and backend run separately
+
+## step 26 - cleaning up the ui
+
+i redesigned the frontend so tabletwo feels more like a real consumer app instead of a basic form.
+
+i added better spacing, typography, restaurant cards, match tags, and responsive styling while keeping the design simple.
+
+## what i learned
+
+- how to style react components with css
+- how to use grid layouts
+- how to make a page responsive
+- how to separate functionality from presentation
