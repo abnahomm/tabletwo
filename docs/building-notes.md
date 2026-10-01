@@ -84,3 +84,38 @@ i did this because i wanted the program to start feeling more like an actual app
 - how to convert text input into a number
 - how to pass user input into functions
 - how user preferences can change the results the program returns
+
+## step 6 - allowing more than one vibe
+
+since a restaurant can fit more than one vibe.
+
+for example, a place can be romantic, chill, and upscale at the same time.
+
+i changed the restaurant data so each restaurant now stores a list of vibes instead of just one.
+
+the program now checks if the vibe the user entered is inside that list.
+
+this makes the recommendation system more flexible and closer to how i want the real app to work.
+
+## what i learned
+
+- how to store multiple values in a list
+- how to check if something exists inside a list
+- how changing the data structure can make the recommendation logic better
+
+## step 7 - adjusting the recommendation weights
+
+while testing the program, i noticed that choosing japanese food gave several restaurants the same score even though only one of them was actually japanese.
+
+this happened because cuisine and vibe were worth the same amount of points.
+
+i changed cuisine to be worth more because if someone asks for a specific type of food, that should matter more than a restaurant just having the right vibe.
+
+this helped me understand that recommendation systems are not only about adding features. the weights you give each preference can completely change the results.
+
+## what i learned
+
+- how scoring weights affect recommendations
+- why some preferences should matter more than others
+- how testing different inputs can expose problems in the logic
+- how recommendation systems need tuning to give useful results

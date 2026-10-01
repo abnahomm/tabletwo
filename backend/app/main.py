@@ -5,7 +5,7 @@ restaurants = [
         "cuisine": "italian",
         "price": 3,
         "rating": 4.7,
-        "vibe": "romantic"
+        "vibes": ["romantic", "upscale", "chill"]
     },
     {
         "name": "kabooki sushi",
@@ -13,7 +13,7 @@ restaurants = [
         "cuisine": "japanese",
         "price": 3,
         "rating": 4.6,
-        "vibe": "upscale"
+        "vibes": ["upscale", "romantic"]
     },
     {
         "name": "hawkers",
@@ -21,7 +21,7 @@ restaurants = [
         "cuisine": "asian",
         "price": 2,
         "rating": 4.5,
-        "vibe": "casual"
+        "vibes": ["casual", "chill", "lively"]
     }
 ]
 
@@ -29,12 +29,12 @@ def score_restaurant(restaurant, preferred_cuisine, max_price, preferred_vibe):
     score = 0
 
     if restaurant["cuisine"].lower() == preferred_cuisine.lower():
-        score += 3
+        score += 5
 
     if restaurant["price"] <= max_price:
         score += 2
 
-    if restaurant["vibe"].lower() == preferred_vibe.lower():
+    if preferred_vibe.lower() in restaurant["vibes"]:
         score += 3
 
     if restaurant["rating"] >= 4.5:
