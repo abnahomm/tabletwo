@@ -346,3 +346,19 @@ the form now collects the user's preferences correctly and prints them in the br
 - how react state stores form values
 - how to handle form submissions
 - how to test frontend input in the browser console
+
+## step 25 - connecting the frontend to the backend
+
+i connected the react form to the fastapi `/recommendations` endpoint.
+
+when the user submits their preferences, the frontend sends them to the backend and displays the real restaurant results returned from yelp.
+
+i also added loading and error handling so the page can handle the request properly.
+
+## what i learned
+
+- how to call a backend api from react
+- how to use fetch
+- how to read json in the frontend
+- how to display api results with react
+- why cors is needed when frontend and backend run separately
