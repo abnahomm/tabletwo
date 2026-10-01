@@ -265,3 +265,15 @@ for example, phrases like "good for a first date" or "somewhere we can watch the
 - how to search for words inside user input
 - how to make text input more flexible
 - how keyword matching can make recommendations feel more natural
+
+## step 19 - showing restaurant details
+
+i added the restaurant address and yelp link to the results so the recommendations are actually useful after a restaurant is found.
+
+the app now shows the restaurant, rating, price, score, address, link, and why it matched.
+
+## what i learned
+
+- how to display more data from an api response
+- how to organize results so they are easier to understand
+- how the same api data can be used for both scoring and display

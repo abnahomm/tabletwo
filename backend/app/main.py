@@ -276,6 +276,11 @@ for restaurant in filtered_restaurants:
         restaurant["score"]
     )
 
+    print("address:", restaurant["address"])
+    print("yelp:", restaurant["url"])
+
+    print("why it matched:")
+
     for reason in restaurant["reasons"]:
         print("  -", reason)
 
