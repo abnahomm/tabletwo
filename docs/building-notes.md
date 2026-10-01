@@ -186,3 +186,44 @@ right now the search sends a location and cuisine to yelp and gets restaurant na
 - how to send search parameters
 - how to read json data
 - how to keep my api key outside of the code
+
+## step 13 - connecting the api to the main program
+
+i connected the yelp search function to the main tabletwo program.
+
+the user can now enter a city and type of food, and those preferences are sent to yelp to find real restaurants.
+
+i also changed the test code in `yelp_api.py` so it only runs when i test that file directly.
+
+## what i learned
+
+- how to import a function from another python file
+- how different files in a project can work together
+- how user input can be sent to an external api
+
+
+## step 14 - converting yelp data
+
+i converted the restaurant data from yelp into a simpler format that tabletwo can use.
+
+i kept yelp's `$`, `$$`, and `$$$` format for displaying price, but i also created a numeric price level behind the scenes so the program can compare it with the user's budget.
+
+## what i learned
+
+- how to reshape api data
+- how to store one value in different formats
+- how to keep display data separate from logic
+
+## step 15 - filtering real restaurants by price
+
+i connected the user's budget to the real restaurant data from yelp.
+
+the program now compares the selected price level with each restaurant and removes places that are over budget.
+
+if yelp does not have a price listed, i keep the restaurant in the results for now instead of automatically removing it.
+
+## what i learned
+
+- how to filter api results
+- how to compare real data with user input
+- how to handle missing api data

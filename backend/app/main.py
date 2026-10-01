@@ -1,3 +1,4 @@
+from yelp_api import search_restaurants
 restaurants = [
     {
         "name": "prato",
@@ -98,6 +99,8 @@ def recommend_restaurants(preferred_cuisine, max_price, preferred_vibe):
     return recommendations
 
 
+location = input("what city are you looking in? ")
+
 preferred_cuisine = input("what type of food do you want? ")
 
 while True:
@@ -116,23 +119,49 @@ while True:
 
 preferred_vibe = input("what kind of vibe do you want? ")
 
-results = recommend_restaurants(
-    preferred_cuisine,
-    max_price,
-    preferred_vibe
+real_restaurants = search_restaurants(
+    location,
+    preferred_cuisine
 )
 
-print("\nrecommended restaurants:\n")
+converted_restaurants = []
 
-for restaurant in results:
+for restaurant in real_restaurants:
+    converted_restaurant = {
+        "name": restaurant["name"],
+        "rating": restaurant["rating"],
+        "price": restaurant.get("price", "not listed"),
+        "price_level": len(restaurant.get("price", "")),
+        "categories": [
+            category["title"].lower()
+            for category in restaurant["categories"]
+        ],
+        "address": ", ".join(
+            restaurant["location"]["display_address"]
+        ),
+        "url": restaurant["url"]
+    }
+
+    converted_restaurants.append(converted_restaurant)
+    filtered_restaurants = []
+
+for restaurant in converted_restaurants:
+    price_level = restaurant["price_level"]
+
+    if price_level == 0:
+        filtered_restaurants.append(restaurant)
+
+    elif price_level <= max_price:
+        filtered_restaurants.append(restaurant)
+
+
+print("\nrestaurants found:\n")
+
+for restaurant in filtered_restaurants:
     print(
         restaurant["name"],
-        "- score:",
-        restaurant["score"]
+        "- rating:",
+        restaurant["rating"],
+        "- price:",
+        restaurant["price"]
     )
-
-    for reason in restaurant["reasons"]:
-        print("  -", reason)
-
-    print()
-

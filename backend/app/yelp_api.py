@@ -37,14 +37,15 @@ def search_restaurants(location, cuisine):
     return data["businesses"]
 
 
-restaurants = search_restaurants(
-    "orlando, fl",
-    "italian"
-)
-
-for restaurant in restaurants:
-    print(
-        restaurant["name"],
-        "- rating:",
-        restaurant["rating"]
+if __name__ == "__main__":
+    restaurants = search_restaurants(
+        "orlando, fl",
+        "italian"
     )
+
+    for restaurant in restaurants:
+        print(
+            restaurant["name"],
+            "- rating:",
+            restaurant["rating"]
+        )
