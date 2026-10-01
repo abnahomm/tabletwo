@@ -9,6 +9,8 @@ type Restaurant = {
   reasons: string[];
   address: string;
   yelp_url: string;
+  maps_url: string;
+  tiktok_url: string;
 };
 
 function App() {
@@ -26,6 +28,7 @@ function App() {
 
     setLoading(true);
     setError("");
+    setRestaurants([]);
 
     try {
       const params = new URLSearchParams({
@@ -61,7 +64,7 @@ function App() {
         <h1>tabletwo</h1>
 
         <p className="subtitle">
-          find a place to eat without checking five different apps
+          find somewhere to eat without checking five different apps
         </p>
 
         <form className="search-form" onSubmit={handleSubmit}>
@@ -87,7 +90,7 @@ function App() {
             />
           </div>
 
-          <div className="field">
+          <div className="field budget-field">
             <label>budget</label>
             <select
               value={maxPrice}
@@ -110,7 +113,7 @@ function App() {
             />
           </div>
 
-          <button type="submit" className="search-button">
+          <button className="search-button" type="submit" disabled={loading}>
             {loading ? "searching..." : "find restaurants"}
           </button>
         </form>
@@ -121,44 +124,83 @@ function App() {
       {restaurants.length > 0 && (
         <section className="results">
           <div className="results-heading">
-            <h2>your matches</h2>
-            <p>{restaurants.length} restaurants found</p>
+            <div>
+              <p className="results-label">recommendations</p>
+              <h2>your matches</h2>
+            </div>
+
+            <p>
+              {restaurants.length}{" "}
+              {restaurants.length === 1 ? "restaurant" : "restaurants"} found
+            </p>
           </div>
 
           <div className="restaurant-grid">
-            {restaurants.map((restaurant) => (
+            {restaurants.map((restaurant, index) => (
               <article className="restaurant-card" key={restaurant.yelp_url}>
                 <div className="card-top">
                   <div>
+                    <p className="ranking">#{index + 1}</p>
                     <h3>{restaurant.name}</h3>
+
                     <p className="meta">
-                      {restaurant.rating} ★ · {restaurant.price}
+                      {restaurant.rating} ★
+                      <span>·</span>
+                      {restaurant.price}
                     </p>
                   </div>
 
-                  <span className="score">{restaurant.score}</span>
+                  <div className="score">
+                    <span>{restaurant.score}</span>
+                    <small>match</small>
+                  </div>
                 </div>
 
                 <p className="address">{restaurant.address}</p>
 
-                <div className="reasons">
-                  {restaurant.reasons.map((reason) => (
-                    <span key={reason}>{reason}</span>
-                  ))}
-                </div>
+                {restaurant.reasons.length > 0 && (
+                  <div className="reasons">
+                    {restaurant.reasons.map((reason) => (
+                      <span key={reason}>{reason}</span>
+                    ))}
+                  </div>
+                )}
 
-                <a
-                  className="yelp-link"
-                  href={restaurant.yelp_url}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  view on yelp
-                </a>
+                <div className="restaurant-links">
+                  <a
+                    href={restaurant.yelp_url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    yelp
+                  </a>
+
+                  <a
+                    href={restaurant.maps_url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    maps
+                  </a>
+
+                  <a
+                    href={restaurant.tiktok_url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    tiktok
+                  </a>
+                </div>
               </article>
             ))}
           </div>
         </section>
+      )}
+
+      {!loading && !error && restaurants.length === 0 && (
+        <p className="empty-state">
+          tell us what you're looking for and we'll narrow it down.
+        </p>
       )}
     </main>
   );

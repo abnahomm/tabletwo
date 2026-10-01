@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from urllib.parse import quote_plus
 
 app = FastAPI(
     title="TableTwo API",
@@ -191,14 +192,26 @@ def get_recommendations(
             restaurant["location"]["display_address"]
         )
 
+        restaurant_name = restaurant["name"]
+
+        maps_query = quote_plus(
+            f"{restaurant_name} {address}"
+        )
+
+        tiktok_query = quote_plus(
+            f"{restaurant_name} {location}"
+        )
+
         result = {
-            "name": restaurant["name"],
+            "name": restaurant_name,
             "rating": rating,
             "price": price if price else "not listed",
             "score": score,
             "reasons": reasons,
             "address": address,
-            "yelp_url": restaurant["url"]
+            "yelp_url": restaurant["url"],
+            "maps_url": f"https://www.google.com/maps/search/?api=1&query={maps_query}",
+            "tiktok_url": f"https://www.tiktok.com/search?q={tiktok_query}"
         }
 
         results.append(result)

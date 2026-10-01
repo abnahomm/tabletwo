@@ -375,3 +375,15 @@ i added better spacing, typography, restaurant cards, match tags, and responsive
 - how to use grid layouts
 - how to make a page responsive
 - how to separate functionality from presentation
+
+## step 27 - adding maps and tiktok links
+
+i added google maps and tiktok links to each restaurant result.
+
+the backend creates the links using the restaurant name and location, then sends them to the react frontend.
+
+## what i learned
+
+- how to create dynamic links
+- how to send more data through the api
+- how to use backend data for frontend actions
