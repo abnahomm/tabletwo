@@ -23,7 +23,7 @@ app.add_middleware(
 )
 
 
-category_vibes = {
+CATEGORY_VIBES = {
     "sports bars": ["sports", "lively", "casual"],
     "cocktail bars": ["upscale", "romantic", "lively"],
     "wine bars": ["romantic", "upscale", "chill"],
@@ -34,7 +34,7 @@ category_vibes = {
 }
 
 
-vibe_groups = {
+VIBE_GROUPS = {
     "chill": [
         "chill",
         "casual",
@@ -78,27 +78,70 @@ vibe_groups = {
 }
 
 
+def get_categories(restaurant):
+    return [
+        category["title"].lower()
+        for category in restaurant["categories"]
+    ]
+
+
 def get_restaurant_vibes(categories):
     restaurant_vibes = []
 
     for category in categories:
-        if category in category_vibes:
-            restaurant_vibes.extend(category_vibes[category])
+        if category in CATEGORY_VIBES:
+            restaurant_vibes.extend(
+                CATEGORY_VIBES[category]
+            )
 
     return restaurant_vibes
 
 
 def vibe_matches(preferred_vibe, restaurant_vibes):
-    for group, related_words in vibe_groups.items():
-        if any(
-            word in preferred_vibe.lower()
+    preferred_vibe = preferred_vibe.lower()
+
+    for related_words in VIBE_GROUPS.values():
+        user_match = any(
+            word in preferred_vibe
             for word in related_words
-        ):
-            for restaurant_vibe in restaurant_vibes:
-                if restaurant_vibe in related_words:
-                    return True
+        )
+
+        restaurant_match = any(
+            vibe in related_words
+            for vibe in restaurant_vibes
+        )
+
+        if user_match and restaurant_match:
+            return True
 
     return False
+
+
+def score_basic_restaurant(restaurant, max_price):
+    score = 0
+    reasons = []
+
+    rating = restaurant["rating"]
+    price = restaurant.get("price", "")
+    price_level = len(price)
+
+    if rating >= 4.5:
+        score += 4
+        reasons.append("high rating")
+
+    elif rating >= 4.0:
+        score += 2
+        reasons.append("good rating")
+
+    if price_level > 0:
+        score += 1
+        reasons.append("price listed")
+
+    if price_level == max_price:
+        score += 2
+        reasons.append("matches budget")
+
+    return score, reasons
 
 
 def build_links(restaurant_name, address, location):
@@ -110,16 +153,60 @@ def build_links(restaurant_name, address, location):
         f"{restaurant_name} {location}"
     )
 
+    maps_url = (
+        "https://www.google.com/maps/search/"
+        f"?api=1&query={maps_query}"
+    )
+
+    tiktok_url = (
+        "https://www.tiktok.com/search"
+        f"?q={tiktok_query}"
+    )
+
+    return maps_url, tiktok_url
+
+
+def build_result(
+    restaurant,
+    location,
+    score,
+    reasons
+):
+    restaurant_name = restaurant["name"]
+
+    address = ", ".join(
+        restaurant["location"]["display_address"]
+    )
+
+    price = restaurant.get("price", "")
+
+    maps_url, tiktok_url = build_links(
+        restaurant_name,
+        address,
+        location
+    )
+
     return {
-        "maps_url": (
-            "https://www.google.com/maps/search/"
-            f"?api=1&query={maps_query}"
-        ),
-        "tiktok_url": (
-            "https://www.tiktok.com/search"
-            f"?q={tiktok_query}"
-        )
+        "name": restaurant_name,
+        "rating": restaurant["rating"],
+        "price": price if price else "not listed",
+        "score": score,
+        "reasons": reasons,
+        "address": address,
+        "yelp_url": restaurant["url"],
+        "maps_url": maps_url,
+        "tiktok_url": tiktok_url
     }
+
+
+def is_over_budget(restaurant, max_price):
+    price = restaurant.get("price", "")
+    price_level = len(price)
+
+    return (
+        price_level > 0
+        and price_level > max_price
+    )
 
 
 @app.get("/")
@@ -151,66 +238,31 @@ def get_recommendations(
     results = []
 
     for restaurant in restaurants:
-        price = restaurant.get("price", "")
-        price_level = len(price)
 
-        if price_level > 0 and price_level > max_price:
+        if is_over_budget(restaurant, max_price):
             continue
 
-        score = 0
-        reasons = []
+        score, reasons = score_basic_restaurant(
+            restaurant,
+            max_price
+        )
 
-        rating = restaurant["rating"]
+        categories = get_categories(restaurant)
 
-        if rating >= 4.5:
-            score += 4
-            reasons.append("high rating")
-        elif rating >= 4.0:
-            score += 2
-            reasons.append("good rating")
-
-        if price_level > 0:
-            score += 1
-            reasons.append("price listed")
-
-        if price_level == max_price:
-            score += 2
-            reasons.append("matches budget")
-
-        categories = [
-            category["title"].lower()
-            for category in restaurant["categories"]
-        ]
-
-        restaurant_vibes = get_restaurant_vibes(categories)
+        restaurant_vibes = get_restaurant_vibes(
+            categories
+        )
 
         if vibe_matches(vibe, restaurant_vibes):
             score += 3
             reasons.append("matches vibe")
 
-        address = ", ".join(
-            restaurant["location"]["display_address"]
+        result = build_result(
+            restaurant,
+            location,
+            score,
+            reasons
         )
-
-        restaurant_name = restaurant["name"]
-
-        links = build_links(
-            restaurant_name,
-            address,
-            location
-        )
-
-        result = {
-            "name": restaurant_name,
-            "rating": rating,
-            "price": price if price else "not listed",
-            "score": score,
-            "reasons": reasons,
-            "address": address,
-            "yelp_url": restaurant["url"],
-            "maps_url": links["maps_url"],
-            "tiktok_url": links["tiktok_url"]
-        }
 
         results.append(result)
 
@@ -247,37 +299,16 @@ def get_couple_recommendations(
     results = []
 
     for restaurant in restaurants:
-        price = restaurant.get("price", "")
-        price_level = len(price)
 
-        if price_level > 0 and price_level > max_price:
+        if is_over_budget(restaurant, max_price):
             continue
 
-        score = 0
-        reasons = []
+        score, reasons = score_basic_restaurant(
+            restaurant,
+            max_price
+        )
 
-        rating = restaurant["rating"]
-
-        if rating >= 4.5:
-            score += 4
-            reasons.append("high rating")
-        elif rating >= 4.0:
-            score += 2
-            reasons.append("good rating")
-
-        if price_level > 0:
-            score += 1
-            reasons.append("price listed")
-
-        if price_level == max_price:
-            score += 2
-            reasons.append("matches budget")
-
-        categories = [
-            category["title"].lower()
-            for category in restaurant["categories"]
-        ]
-
+        categories = get_categories(restaurant)
         category_text = " ".join(categories)
 
         if cuisine_one.lower() in category_text:
@@ -288,7 +319,9 @@ def get_couple_recommendations(
             score += 3
             reasons.append("matches person 2 food")
 
-        restaurant_vibes = get_restaurant_vibes(categories)
+        restaurant_vibes = get_restaurant_vibes(
+            categories
+        )
 
         if vibe_matches(vibe_one, restaurant_vibes):
             score += 2
@@ -298,29 +331,12 @@ def get_couple_recommendations(
             score += 2
             reasons.append("matches person 2 vibe")
 
-        address = ", ".join(
-            restaurant["location"]["display_address"]
+        result = build_result(
+            restaurant,
+            location,
+            score,
+            reasons
         )
-
-        restaurant_name = restaurant["name"]
-
-        links = build_links(
-            restaurant_name,
-            address,
-            location
-        )
-
-        result = {
-            "name": restaurant_name,
-            "rating": rating,
-            "price": price if price else "not listed",
-            "score": score,
-            "reasons": reasons,
-            "address": address,
-            "yelp_url": restaurant["url"],
-            "maps_url": links["maps_url"],
-            "tiktok_url": links["tiktok_url"]
-        }
 
         results.append(result)
 

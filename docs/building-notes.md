@@ -411,3 +411,15 @@ the backend now compares two people's food and vibe preferences and gives restau
 - how to handle two sets of user preferences
 - how to reuse recommendation logic
 - how to rank restaurants based on shared preferences
+
+## step 30 - cleaning up the backend
+
+i cleaned up the backend by moving repeated code into reusable functions.
+
+instead of both recommendation endpoints repeating things like price checks, vibe matching, scoring, and link creation, they can now use the same helper functions.
+
+## what i learned
+
+- how to break repeated code into reusable functions
+- why avoiding duplicate code makes a project easier to maintain
+- how refactoring can improve code without changing what the app does
