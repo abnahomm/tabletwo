@@ -25,19 +25,57 @@ restaurants = [
     }
 ]
 
-def find_restaurants(cuisine, max_price):
-    matches = []
+def score_restaurant(restaurant, preferred_cuisine, max_price, preferred_vibe):
+    score = 0
+
+    if restaurant["cuisine"].lower() == preferred_cuisine.lower():
+        score += 3
+
+    if restaurant["price"] <= max_price:
+        score += 2
+
+    if restaurant["vibe"].lower() == preferred_vibe.lower():
+        score += 3
+
+    if restaurant["rating"] >= 4.5:
+        score += 2
+
+    return score
+
+
+def recommend_restaurants(preferred_cuisine, max_price, preferred_vibe):
+    recommendations = []
 
     for restaurant in restaurants:
-        if (
-            restaurant["cuisine"].lower() == cuisine.lower()
-            and restaurant["price"] <= max_price
-        ):
-            matches.append(restaurant)
+        score = score_restaurant(
+            restaurant,
+            preferred_cuisine,
+            max_price,
+            preferred_vibe
+        )
 
-    return matches
+        restaurant_result = restaurant.copy()
+        restaurant_result["score"] = score
+
+        recommendations.append(restaurant_result)
+
+    recommendations.sort(
+        key=lambda restaurant: restaurant["score"],
+        reverse=True
+    )
+
+    return recommendations
 
 
-results = find_restaurants("italian", 3)
+results = recommend_restaurants(
+    "italian",
+    3,
+    "romantic"
+)
 
-print(results)
+for restaurant in results:
+    print(
+        restaurant["name"],
+        "- score:",
+        restaurant["score"]
+    )
