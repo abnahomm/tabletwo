@@ -302,3 +302,19 @@ i created basic endpoints and ran the backend on a local server to make sure the
 - how to create api endpoints with fastapi
 - how to run a local web server
 - how a frontend will eventually communicate with python
+
+## step 22 - creating a recommendation endpoint
+
+i created a `/recommendations` api endpoint that accepts the user's location, cuisine, budget, and vibe.
+
+the endpoint searches yelp for real restaurants, filters out places above the user's budget, and returns the results as json.
+
+i also fixed an issue where the backend could not find my `.env` file and learned how the api key gets loaded into the project.
+
+## what i learned
+
+- how api endpoints can accept user inputs
+- how query parameters work
+- how to return json from fastapi
+- how environment variables are loaded
+- how to debug a 500 server error

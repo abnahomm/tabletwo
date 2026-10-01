@@ -4,7 +4,9 @@ import requests
 from dotenv import load_dotenv
 
 
-load_dotenv()
+from pathlib import Path
+env_path = Path(__file__).resolve().parents[2] / ".env"
+load_dotenv(env_path)
 
 API_KEY = os.getenv("YELP_API_KEY")
 
@@ -17,11 +19,10 @@ def search_restaurants(location, cuisine):
     }
 
     params = {
-        "location": location,
-        "term": f"{cuisine} restaurants",
-        "categories": "restaurants",
-        "limit": 10
-    }
+    "location": location,
+    "term": f"{cuisine} restaurants",
+    "limit": 10
+}
 
     response = requests.get(
         URL,
@@ -30,7 +31,13 @@ def search_restaurants(location, cuisine):
         timeout=10
     )
 
-    response.raise_for_status()
+    if response.status_code != 200:
+        print("yelp error:", response.status_code)
+        print(response.text)
+    if response.status_code != 200:
+        raise Exception(
+            f"Yelp error {response.status_code}: {response.text}"
+    )
 
     data = response.json()
 
