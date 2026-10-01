@@ -36,19 +36,19 @@ button {
 .page {
   width: min(1120px, calc(100% - 40px));
   margin: 0 auto;
-  padding: 76px 0 60px;
+  padding: 72px 0 64px;
 }
 
 .hero {
   max-width: 980px;
-  margin: 0 auto 68px;
+  margin: 0 auto 64px;
   text-align: center;
 }
 
 .eyebrow {
   margin: 0 0 14px;
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: 650;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: #817b72;
@@ -63,8 +63,8 @@ button {
 }
 
 .subtitle {
-  margin: 24px auto 26px;
   max-width: 540px;
+  margin: 24px auto 26px;
   font-size: 1.05rem;
   line-height: 1.6;
   color: #69645d;
@@ -75,31 +75,46 @@ button {
   gap: 4px;
   margin-bottom: 18px;
   padding: 4px;
+
   background: #e9e5de;
   border-radius: 10px;
 }
 
 .mode-switch button {
   padding: 8px 14px;
+
   border-radius: 7px;
+
   background: transparent;
   color: #69645d;
+
   cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.mode-switch button:hover {
+  color: #191816;
 }
 
 .mode-switch button.active {
   background: #fff;
   color: #191816;
   font-weight: 600;
+
+  box-shadow: 0 1px 4px rgba(40, 35, 30, 0.08);
 }
 
 .search-form {
   display: grid;
-  grid-template-columns: 1.2fr 1fr 0.55fr 1.35fr auto;
+  grid-template-columns: 1.2fr 1fr 1.25fr 0.55fr auto;
   gap: 10px;
   align-items: end;
 
   padding: 12px;
+
   background: #fff;
   border: 1px solid #ddd8cf;
   border-radius: 18px;
@@ -122,15 +137,20 @@ button {
   display: flex;
   flex-direction: column;
   gap: 7px;
+
+  min-width: 0;
+
   text-align: left;
 }
 
 .field label {
   padding-left: 2px;
+
   font-size: 0.68rem;
   font-weight: 650;
   letter-spacing: 0.11em;
   text-transform: uppercase;
+
   color: #817b72;
 }
 
@@ -150,7 +170,8 @@ button {
 
   transition:
     border-color 0.15s ease,
-    background 0.15s ease;
+    background 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .field input::placeholder {
@@ -161,6 +182,7 @@ button {
 .field select:focus {
   border-color: #8f887e;
   background: #fff;
+  box-shadow: 0 0 0 3px rgba(143, 136, 126, 0.12);
 }
 
 .search-button {
@@ -168,11 +190,13 @@ button {
   padding: 0 20px;
 
   border-radius: 10px;
+
   background: #191816;
   color: #fff;
 
   font-weight: 600;
   white-space: nowrap;
+
   cursor: pointer;
 
   transition:
@@ -194,8 +218,12 @@ button {
 }
 
 .error {
-  margin-top: 16px;
+  max-width: 560px;
+  margin: 16px auto 0;
+
   font-size: 0.9rem;
+  line-height: 1.5;
+
   color: #a13f3f;
 }
 
@@ -208,27 +236,33 @@ button {
   align-items: flex-end;
   justify-content: space-between;
   gap: 20px;
+
   margin-bottom: 20px;
 }
 
 .results-label {
   margin: 0 0 5px;
+
   font-size: 0.7rem;
   font-weight: 650;
   text-transform: uppercase;
   letter-spacing: 0.12em;
+
   color: #918b82;
 }
 
 .results-heading h2 {
   margin: 0;
+
   font-size: 2rem;
   letter-spacing: -0.035em;
 }
 
 .results-heading > p {
   margin: 0;
+
   font-size: 0.9rem;
+
   color: #777168;
 }
 
@@ -248,12 +282,16 @@ button {
 
   transition:
     transform 0.15s ease,
-    border-color 0.15s ease;
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .restaurant-card:hover {
   transform: translateY(-2px);
+
   border-color: #c6c0b7;
+
+  box-shadow: 0 8px 24px rgba(44, 39, 32, 0.05);
 }
 
 .card-top {
@@ -263,15 +301,22 @@ button {
   gap: 20px;
 }
 
+.restaurant-main {
+  min-width: 0;
+}
+
 .ranking {
   margin: 0 0 7px;
+
   font-size: 0.7rem;
   font-weight: 650;
+
   color: #969087;
 }
 
 .restaurant-card h3 {
   margin: 0 0 7px;
+
   font-size: 1.28rem;
   line-height: 1.25;
   letter-spacing: -0.025em;
@@ -283,11 +328,15 @@ button {
   align-items: center;
 
   margin: 0;
+
   font-size: 0.88rem;
+
   color: #69645d;
 }
 
 .score {
+  flex-shrink: 0;
+
   min-width: 54px;
   height: 54px;
 
@@ -310,16 +359,20 @@ button {
 
 .score small {
   margin-top: 3px;
+
   font-size: 0.56rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+
   color: #8f887e;
 }
 
 .address {
   margin: 17px 0 0;
+
   font-size: 0.88rem;
   line-height: 1.55;
+
   color: #777168;
 }
 
@@ -327,6 +380,7 @@ button {
   display: flex;
   flex-wrap: wrap;
   gap: 7px;
+
   margin: 18px 0;
 }
 
@@ -334,27 +388,33 @@ button {
   padding: 6px 9px;
 
   border-radius: 999px;
+
   background: #f1eee8;
 
   font-size: 0.73rem;
   font-weight: 500;
+
   color: #5f5a53;
 }
 
 .restaurant-links {
   display: flex;
+  flex-wrap: wrap;
   gap: 16px;
+
   margin-top: 20px;
 }
 
 .restaurant-links a {
+  padding-bottom: 2px;
+
+  border-bottom: 1px solid #191816;
+
   color: #191816;
+
   font-size: 0.85rem;
   font-weight: 650;
   text-decoration: none;
-
-  padding-bottom: 2px;
-  border-bottom: 1px solid #191816;
 
   transition: opacity 0.15s ease;
 }
@@ -365,9 +425,12 @@ button {
 
 .empty-state {
   margin: -30px 0 0;
+
   text-align: center;
-  color: #979087;
+
   font-size: 0.9rem;
+
+  color: #979087;
 }
 
 .no-results {
@@ -384,13 +447,16 @@ button {
 
 .no-results h2 {
   margin: 0 0 8px;
+
   font-size: 1.35rem;
 }
 
 .no-results p {
   margin: 0;
-  color: #777168;
+
   line-height: 1.5;
+
+  color: #777168;
 }
 
 @media (max-width: 1100px) {
@@ -404,6 +470,10 @@ button {
 }
 
 @media (max-width: 900px) {
+  .page {
+    width: min(100% - 32px, 1120px);
+  }
+
   .search-form {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -415,22 +485,42 @@ button {
 
 @media (max-width: 700px) {
   .page {
-    width: min(100% - 28px, 1120px);
-    padding-top: 50px;
+    width: min(100% - 24px, 1120px);
+    padding-top: 46px;
   }
 
   .hero {
-    margin-bottom: 52px;
+    margin-bottom: 48px;
+  }
+
+  .hero h1 {
+    font-size: clamp(3.3rem, 18vw, 5rem);
+  }
+
+  .subtitle {
+    margin-top: 20px;
+    font-size: 0.98rem;
+  }
+
+  .mode-switch {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .mode-switch button {
+    flex: 1;
   }
 
   .search-form,
   .search-form.couple-form {
     grid-template-columns: 1fr;
+    padding: 10px;
   }
 
   .search-button,
   .search-form.couple-form .search-button {
     grid-column: auto;
+    width: 100%;
   }
 
   .restaurant-grid {
@@ -441,5 +531,33 @@ button {
     align-items: flex-start;
     flex-direction: column;
     gap: 6px;
+  }
+}
+
+@media (max-width: 460px) {
+  .page {
+    width: min(100% - 18px, 1120px);
+    padding-top: 34px;
+  }
+
+  .hero {
+    margin-bottom: 42px;
+  }
+
+  .hero h1 {
+    font-size: 3.5rem;
+  }
+
+  .restaurant-card {
+    padding: 19px;
+  }
+
+  .card-top {
+    gap: 12px;
+  }
+
+  .score {
+    min-width: 50px;
+    height: 50px;
   }
 }

@@ -79,7 +79,9 @@ function App() {
 
       setRestaurants(data.restaurants);
     } catch {
-      setError("something went wrong while finding restaurants");
+      setError(
+        "couldn't load restaurants right now. make sure the backend is running and try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -103,7 +105,7 @@ function App() {
           find somewhere to eat without checking five different apps
         </p>
 
-        <div className="mode-switch">
+        <div className="mode-switch" aria-label="search mode">
           <button
             type="button"
             className={mode === "single" ? "active" : ""}
@@ -128,8 +130,9 @@ function App() {
           onSubmit={handleSubmit}
         >
           <div className="field">
-            <label>city</label>
+            <label htmlFor="location">city</label>
             <input
+              id="location"
               type="text"
               value={location}
               onChange={(event) => setLocation(event.target.value)}
@@ -141,8 +144,9 @@ function App() {
           {mode === "single" ? (
             <>
               <div className="field">
-                <label>food</label>
+                <label htmlFor="cuisine">food</label>
                 <input
+                  id="cuisine"
                   type="text"
                   value={cuisine}
                   onChange={(event) => setCuisine(event.target.value)}
@@ -152,12 +156,13 @@ function App() {
               </div>
 
               <div className="field">
-                <label>vibe</label>
+                <label htmlFor="vibe">vibe</label>
                 <input
+                  id="vibe"
                   type="text"
                   value={vibe}
                   onChange={(event) => setVibe(event.target.value)}
-                  placeholder="romantic, chill, lively..."
+                  placeholder="romantic, chill..."
                   required
                 />
               </div>
@@ -165,8 +170,9 @@ function App() {
           ) : (
             <>
               <div className="field">
-                <label>person 1 food</label>
+                <label htmlFor="cuisine-one">person 1 food</label>
                 <input
+                  id="cuisine-one"
                   type="text"
                   value={cuisineOne}
                   onChange={(event) => setCuisineOne(event.target.value)}
@@ -176,8 +182,9 @@ function App() {
               </div>
 
               <div className="field">
-                <label>person 1 vibe</label>
+                <label htmlFor="vibe-one">person 1 vibe</label>
                 <input
+                  id="vibe-one"
                   type="text"
                   value={vibeOne}
                   onChange={(event) => setVibeOne(event.target.value)}
@@ -187,8 +194,9 @@ function App() {
               </div>
 
               <div className="field">
-                <label>person 2 food</label>
+                <label htmlFor="cuisine-two">person 2 food</label>
                 <input
+                  id="cuisine-two"
                   type="text"
                   value={cuisineTwo}
                   onChange={(event) => setCuisineTwo(event.target.value)}
@@ -198,8 +206,9 @@ function App() {
               </div>
 
               <div className="field">
-                <label>person 2 vibe</label>
+                <label htmlFor="vibe-two">person 2 vibe</label>
                 <input
+                  id="vibe-two"
                   type="text"
                   value={vibeTwo}
                   onChange={(event) => setVibeTwo(event.target.value)}
@@ -211,8 +220,9 @@ function App() {
           )}
 
           <div className="field budget-field">
-            <label>budget</label>
+            <label htmlFor="budget">budget</label>
             <select
+              id="budget"
               value={maxPrice}
               onChange={(event) => setMaxPrice(event.target.value)}
             >
@@ -252,14 +262,15 @@ function App() {
             {restaurants.map((restaurant, index) => (
               <article className="restaurant-card" key={restaurant.yelp_url}>
                 <div className="card-top">
-                  <div>
+                  <div className="restaurant-main">
                     <p className="ranking">#{index + 1}</p>
+
                     <h3>{restaurant.name}</h3>
 
                     <p className="meta">
-                      {restaurant.rating} ★
+                      <span>{restaurant.rating} ★</span>
                       <span>·</span>
-                      {restaurant.price}
+                      <span>{restaurant.price}</span>
                     </p>
                   </div>
 
