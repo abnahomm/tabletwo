@@ -253,3 +253,15 @@ this is still a basic version, but it lets real restaurants start getting vibe p
 - how to turn api categories into my own data
 - how to add custom tags to real restaurant results
 - how to combine api data with my own recommendation logic
+
+## step 18 - making vibe input more flexible
+
+i changed the vibe system so the user can type more natural phrases instead of needing one exact word.
+
+for example, phrases like "good for a first date" or "somewhere we can watch the game" can now match the right vibe group.
+
+## what i learned
+
+- how to search for words inside user input
+- how to make text input more flexible
+- how keyword matching can make recommendations feel more natural

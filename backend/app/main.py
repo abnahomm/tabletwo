@@ -27,11 +27,50 @@ restaurants = [
 ]
 
 vibe_groups = {
-    "chill": ["chill", "casual", "relaxed", "laid back", "cozy"],
-    "romantic": ["romantic", "intimate", "cozy", "date night"],
-    "upscale": ["upscale", "fancy", "elegant", "classy"],
-    "lively": ["lively", "fun", "energetic", "social"],
-    "sports": ["sports", "game", "bar", "lively", "casual"]
+    "chill": [
+        "chill",
+        "casual",
+        "relaxed",
+        "laid back",
+        "lowkey",
+        "cozy"
+    ],
+
+    "romantic": [
+        "romantic",
+        "intimate",
+        "date night",
+        "cute",
+        "cozy",
+        "first date"
+    ],
+
+    "upscale": [
+        "upscale",
+        "fancy",
+        "elegant",
+        "classy",
+        "nice",
+        "luxury"
+    ],
+
+    "lively": [
+        "lively",
+        "fun",
+        "energetic",
+        "social",
+        "busy",
+        "exciting"
+    ],
+
+    "sports": [
+        "sports",
+        "game",
+        "watch the game",
+        "sports bar",
+        "bar",
+        "casual"
+    ]
 }
 
 category_vibes = {
@@ -59,7 +98,10 @@ def score_restaurant(restaurant, preferred_cuisine, max_price, preferred_vibe):
     matched_vibe = False
 
     for group, related_words in vibe_groups.items():
-        if preferred_vibe.lower() in related_words:
+        if any(
+            word in preferred_vibe.lower()
+            for word in related_words
+        ):
             for restaurant_vibe in restaurant["vibes"]:
                 if restaurant_vibe in related_words:
                     matched_vibe = True
