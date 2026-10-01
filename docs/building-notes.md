@@ -277,3 +277,15 @@ the app now shows the restaurant, rating, price, score, address, link, and why i
 - how to display more data from an api response
 - how to organize results so they are easier to understand
 - how the same api data can be used for both scoring and display
+
+## step 20 - adding maps and tiktok links
+
+i added google maps and tiktok search links for each restaurant.
+
+the links are built using the restaurant name and location so the user can quickly check directions or look up videos without searching everything manually.
+
+## what i learned
+
+- how to build dynamic urls with python
+- how to format text safely for a url
+- how to connect recommendation results to other platforms

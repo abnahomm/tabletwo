@@ -1,4 +1,5 @@
 from yelp_api import search_restaurants
+from urllib.parse import quote_plus
 restaurants = [
     {
         "name": "prato",
@@ -190,21 +191,36 @@ for restaurant in real_restaurants:
         if category in category_vibes:
             restaurant_vibes.extend(category_vibes[category])
 
-    converted_restaurant = {
-        "name": restaurant["name"],
-        "rating": restaurant["rating"],
-        "price": restaurant.get("price", "not listed"),
-        "price_level": len(restaurant.get("price", "")),
-        "categories": categories,
-        "vibes": restaurant_vibes,
-        "address": ", ".join(
-            restaurant["location"]["display_address"]
-    ),
-    "url": restaurant["url"]
+restaurant_name = restaurant["name"]
+
+address = ", ".join(
+    restaurant["location"]["display_address"]
+)
+
+maps_query = quote_plus(
+    f"{restaurant_name} {address}"
+)
+
+tiktok_query = quote_plus(
+    f"{restaurant_name} {location}"
+)
+
+converted_restaurant = {
+    "name": restaurant_name,
+    "rating": restaurant["rating"],
+    "price": restaurant.get("price", "not listed"),
+    "price_level": len(restaurant.get("price", "")),
+    "categories": categories,
+    "vibes": restaurant_vibes,
+    "address": address,
+    "url": restaurant["url"],
+    "maps_url": f"https://www.google.com/maps/search/?api=1&query={maps_query}",
+    "tiktok_url": f"https://www.tiktok.com/search?q={tiktok_query}"
 }
 
-    converted_restaurants.append(converted_restaurant)
-    filtered_restaurants = []
+converted_restaurants.append(converted_restaurant)
+
+filtered_restaurants = []
 
 for restaurant in converted_restaurants:
     price_level = restaurant["price_level"]
@@ -278,7 +294,8 @@ for restaurant in filtered_restaurants:
 
     print("address:", restaurant["address"])
     print("yelp:", restaurant["url"])
-
+    print("maps:", restaurant["maps_url"])
+    print("tiktok:", restaurant["tiktok_url"])
     print("why it matched:")
 
     for reason in restaurant["reasons"]:
