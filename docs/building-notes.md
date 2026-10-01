@@ -423,3 +423,15 @@ instead of both recommendation endpoints repeating things like price checks, vib
 - how to break repeated code into reusable functions
 - why avoiding duplicate code makes a project easier to maintain
 - how refactoring can improve code without changing what the app does
+
+## step 31 - handling no results
+
+i added a better empty state for searches that return no restaurants.
+
+before, an empty response could make the app feel broken. now the page tells the user to try changing their cuisine, budget, or vibe.
+
+## what i learned
+
+- how to track whether a user has searched
+- how to handle empty api results
+- how small ui states can make an app feel more complete

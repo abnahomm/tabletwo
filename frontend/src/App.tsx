@@ -31,10 +31,12 @@ function App() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [hasSearched, setHasSearched] = useState(false);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
 
+    setHasSearched(true);
     setLoading(true);
     setError("");
     setRestaurants([]);
@@ -74,12 +76,20 @@ function App() {
       }
 
       const data = await response.json();
+
       setRestaurants(data.restaurants);
     } catch {
       setError("something went wrong while finding restaurants");
     } finally {
       setLoading(false);
     }
+  }
+
+  function switchMode(newMode: "single" | "couple") {
+    setMode(newMode);
+    setRestaurants([]);
+    setError("");
+    setHasSearched(false);
   }
 
   return (
@@ -97,7 +107,7 @@ function App() {
           <button
             type="button"
             className={mode === "single" ? "active" : ""}
-            onClick={() => setMode("single")}
+            onClick={() => switchMode("single")}
           >
             find a spot
           </button>
@@ -105,13 +115,18 @@ function App() {
           <button
             type="button"
             className={mode === "couple" ? "active" : ""}
-            onClick={() => setMode("couple")}
+            onClick={() => switchMode("couple")}
           >
             pick for us
           </button>
         </div>
 
-        <form className="search-form" onSubmit={handleSubmit}>
+        <form
+          className={`search-form ${
+            mode === "couple" ? "couple-form" : ""
+          }`}
+          onSubmit={handleSubmit}
+        >
           <div className="field">
             <label>city</label>
             <input
@@ -142,7 +157,7 @@ function App() {
                   type="text"
                   value={vibe}
                   onChange={(event) => setVibe(event.target.value)}
-                  placeholder="romantic, chill..."
+                  placeholder="romantic, chill, lively..."
                   required
                 />
               </div>
@@ -227,7 +242,10 @@ function App() {
               <h2>your matches</h2>
             </div>
 
-            <p>{restaurants.length} restaurants found</p>
+            <p>
+              {restaurants.length}{" "}
+              {restaurants.length === 1 ? "restaurant" : "restaurants"} found
+            </p>
           </div>
 
           <div className="restaurant-grid">
@@ -253,22 +271,36 @@ function App() {
 
                 <p className="address">{restaurant.address}</p>
 
-                <div className="reasons">
-                  {restaurant.reasons.map((reason) => (
-                    <span key={reason}>{reason}</span>
-                  ))}
-                </div>
+                {restaurant.reasons.length > 0 && (
+                  <div className="reasons">
+                    {restaurant.reasons.map((reason) => (
+                      <span key={reason}>{reason}</span>
+                    ))}
+                  </div>
+                )}
 
                 <div className="restaurant-links">
-                  <a href={restaurant.yelp_url} target="_blank" rel="noreferrer">
+                  <a
+                    href={restaurant.yelp_url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     yelp
                   </a>
 
-                  <a href={restaurant.maps_url} target="_blank" rel="noreferrer">
+                  <a
+                    href={restaurant.maps_url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     maps
                   </a>
 
-                  <a href={restaurant.tiktok_url} target="_blank" rel="noreferrer">
+                  <a
+                    href={restaurant.tiktok_url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     tiktok
                   </a>
                 </div>
@@ -276,6 +308,21 @@ function App() {
             ))}
           </div>
         </section>
+      )}
+
+      {!loading && !error && restaurants.length === 0 && !hasSearched && (
+        <p className="empty-state">
+          tell us what you're looking for and we'll narrow it down.
+        </p>
+      )}
+
+      {!loading && !error && restaurants.length === 0 && hasSearched && (
+        <div className="no-results">
+          <h2>no matches yet</h2>
+          <p>
+            try a different cuisine, budget, or vibe and we'll search again.
+          </p>
+        </div>
       )}
     </main>
   );

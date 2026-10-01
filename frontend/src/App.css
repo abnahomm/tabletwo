@@ -40,7 +40,7 @@ button {
 }
 
 .hero {
-  max-width: 920px;
+  max-width: 980px;
   margin: 0 auto 68px;
   text-align: center;
 }
@@ -63,12 +63,13 @@ button {
 }
 
 .subtitle {
-  margin: 24px auto 34px;
+  margin: 24px auto 26px;
   max-width: 540px;
   font-size: 1.05rem;
   line-height: 1.6;
   color: #69645d;
 }
+
 .mode-switch {
   display: inline-flex;
   gap: 4px;
@@ -106,6 +107,17 @@ button {
   box-shadow: 0 8px 30px rgba(44, 39, 32, 0.05);
 }
 
+.search-form.couple-form {
+  grid-template-columns:
+    1.1fr
+    1fr
+    1fr
+    1fr
+    1fr
+    0.55fr
+    auto;
+}
+
 .field {
   display: flex;
   flex-direction: column;
@@ -135,6 +147,7 @@ button {
   color: #191816;
 
   outline: none;
+
   transition:
     border-color 0.15s ease,
     background 0.15s ease;
@@ -357,13 +370,42 @@ button {
   font-size: 0.9rem;
 }
 
-@media (max-width: 900px) {
-  .search-form {
+.no-results {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 28px;
+
+  text-align: center;
+
+  background: #fff;
+  border: 1px solid #ddd8cf;
+  border-radius: 14px;
+}
+
+.no-results h2 {
+  margin: 0 0 8px;
+  font-size: 1.35rem;
+}
+
+.no-results p {
+  margin: 0;
+  color: #777168;
+  line-height: 1.5;
+}
+
+@media (max-width: 1100px) {
+  .search-form.couple-form {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .budget-field {
-    grid-column: auto;
+  .search-form.couple-form .search-button {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 900px) {
+  .search-form {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .search-button {
@@ -381,8 +423,14 @@ button {
     margin-bottom: 52px;
   }
 
-  .search-form {
+  .search-form,
+  .search-form.couple-form {
     grid-template-columns: 1fr;
+  }
+
+  .search-button,
+  .search-form.couple-form .search-button {
+    grid-column: auto;
   }
 
   .restaurant-grid {
