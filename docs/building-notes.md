@@ -227,3 +227,15 @@ if yelp does not have a price listed, i keep the restaurant in the results for n
 - how to filter api results
 - how to compare real data with user input
 - how to handle missing api data
+
+## step 16 - ranking real restaurants
+
+i added a score to the real yelp results so tabletwo can rank restaurants instead of just showing them in the order they come back from the api.
+
+right now the score uses rating and how well the restaurant's price matches the user's budget.
+
+## what i learned
+
+- how to score real api data
+- how to sort restaurants by score
+- how to show why a restaurant ranked higher

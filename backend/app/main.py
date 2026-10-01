@@ -154,6 +154,37 @@ for restaurant in converted_restaurants:
     elif price_level <= max_price:
         filtered_restaurants.append(restaurant)
 
+for restaurant in filtered_restaurants:
+    score = 0
+    reasons = []
+
+    # higher rated restaurants get more points
+    if restaurant["rating"] >= 4.5:
+        score += 4
+        reasons.append("high rating")
+    elif restaurant["rating"] >= 4.0:
+        score += 2
+        reasons.append("good rating")
+
+    # give a small bonus if yelp has price information
+    if restaurant["price_level"] > 0:
+        score += 1
+        reasons.append("price listed")
+
+    # give a bonus if the restaurant is close to the user's max budget
+    if restaurant["price_level"] == max_price:
+        score += 2
+        reasons.append("matches budget")
+
+    restaurant["score"] = score
+    restaurant["reasons"] = reasons
+
+
+filtered_restaurants.sort(
+    key=lambda restaurant: restaurant["score"],
+    reverse=True
+)
+
 
 print("\nrestaurants found:\n")
 
@@ -163,5 +194,12 @@ for restaurant in filtered_restaurants:
         "- rating:",
         restaurant["rating"],
         "- price:",
-        restaurant["price"]
+        restaurant["price"],
+        "- score:",
+        restaurant["score"]
     )
+
+    for reason in restaurant["reasons"]:
+        print("  -", reason)
+
+    print()
