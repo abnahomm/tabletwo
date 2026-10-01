@@ -14,10 +14,19 @@ type Restaurant = {
 };
 
 function App() {
+  const [mode, setMode] = useState<"single" | "couple">("single");
+
   const [location, setLocation] = useState("");
-  const [cuisine, setCuisine] = useState("");
   const [maxPrice, setMaxPrice] = useState("2");
+
+  const [cuisine, setCuisine] = useState("");
   const [vibe, setVibe] = useState("");
+
+  const [cuisineOne, setCuisineOne] = useState("");
+  const [vibeOne, setVibeOne] = useState("");
+
+  const [cuisineTwo, setCuisineTwo] = useState("");
+  const [vibeTwo, setVibeTwo] = useState("");
 
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(false);
@@ -31,15 +40,33 @@ function App() {
     setRestaurants([]);
 
     try {
-      const params = new URLSearchParams({
-        location,
-        cuisine,
-        max_price: maxPrice,
-        vibe,
-      });
+      let params;
+
+      if (mode === "single") {
+        params = new URLSearchParams({
+          location,
+          cuisine,
+          max_price: maxPrice,
+          vibe,
+        });
+      } else {
+        params = new URLSearchParams({
+          location,
+          cuisine_one: cuisineOne,
+          vibe_one: vibeOne,
+          cuisine_two: cuisineTwo,
+          vibe_two: vibeTwo,
+          max_price: maxPrice,
+        });
+      }
+
+      const endpoint =
+        mode === "single"
+          ? "recommendations"
+          : "couple-recommendations";
 
       const response = await fetch(
-        `http://127.0.0.1:8000/recommendations?${params.toString()}`
+        `http://127.0.0.1:8000/${endpoint}?${params.toString()}`
       );
 
       if (!response.ok) {
@@ -47,7 +74,6 @@ function App() {
       }
 
       const data = await response.json();
-
       setRestaurants(data.restaurants);
     } catch {
       setError("something went wrong while finding restaurants");
@@ -67,6 +93,24 @@ function App() {
           find somewhere to eat without checking five different apps
         </p>
 
+        <div className="mode-switch">
+          <button
+            type="button"
+            className={mode === "single" ? "active" : ""}
+            onClick={() => setMode("single")}
+          >
+            find a spot
+          </button>
+
+          <button
+            type="button"
+            className={mode === "couple" ? "active" : ""}
+            onClick={() => setMode("couple")}
+          >
+            pick for us
+          </button>
+        </div>
+
         <form className="search-form" onSubmit={handleSubmit}>
           <div className="field">
             <label>city</label>
@@ -79,16 +123,77 @@ function App() {
             />
           </div>
 
-          <div className="field">
-            <label>food</label>
-            <input
-              type="text"
-              value={cuisine}
-              onChange={(event) => setCuisine(event.target.value)}
-              placeholder="japanese"
-              required
-            />
-          </div>
+          {mode === "single" ? (
+            <>
+              <div className="field">
+                <label>food</label>
+                <input
+                  type="text"
+                  value={cuisine}
+                  onChange={(event) => setCuisine(event.target.value)}
+                  placeholder="japanese"
+                  required
+                />
+              </div>
+
+              <div className="field">
+                <label>vibe</label>
+                <input
+                  type="text"
+                  value={vibe}
+                  onChange={(event) => setVibe(event.target.value)}
+                  placeholder="romantic, chill..."
+                  required
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="field">
+                <label>person 1 food</label>
+                <input
+                  type="text"
+                  value={cuisineOne}
+                  onChange={(event) => setCuisineOne(event.target.value)}
+                  placeholder="italian"
+                  required
+                />
+              </div>
+
+              <div className="field">
+                <label>person 1 vibe</label>
+                <input
+                  type="text"
+                  value={vibeOne}
+                  onChange={(event) => setVibeOne(event.target.value)}
+                  placeholder="romantic"
+                  required
+                />
+              </div>
+
+              <div className="field">
+                <label>person 2 food</label>
+                <input
+                  type="text"
+                  value={cuisineTwo}
+                  onChange={(event) => setCuisineTwo(event.target.value)}
+                  placeholder="japanese"
+                  required
+                />
+              </div>
+
+              <div className="field">
+                <label>person 2 vibe</label>
+                <input
+                  type="text"
+                  value={vibeTwo}
+                  onChange={(event) => setVibeTwo(event.target.value)}
+                  placeholder="chill"
+                  required
+                />
+              </div>
+            </>
+          )}
 
           <div className="field budget-field">
             <label>budget</label>
@@ -102,19 +207,12 @@ function App() {
             </select>
           </div>
 
-          <div className="field">
-            <label>vibe</label>
-            <input
-              type="text"
-              value={vibe}
-              onChange={(event) => setVibe(event.target.value)}
-              placeholder="romantic, chill, lively..."
-              required
-            />
-          </div>
-
           <button className="search-button" type="submit" disabled={loading}>
-            {loading ? "searching..." : "find restaurants"}
+            {loading
+              ? "searching..."
+              : mode === "single"
+              ? "find restaurants"
+              : "pick for us"}
           </button>
         </form>
 
@@ -129,10 +227,7 @@ function App() {
               <h2>your matches</h2>
             </div>
 
-            <p>
-              {restaurants.length}{" "}
-              {restaurants.length === 1 ? "restaurant" : "restaurants"} found
-            </p>
+            <p>{restaurants.length} restaurants found</p>
           </div>
 
           <div className="restaurant-grid">
@@ -158,36 +253,22 @@ function App() {
 
                 <p className="address">{restaurant.address}</p>
 
-                {restaurant.reasons.length > 0 && (
-                  <div className="reasons">
-                    {restaurant.reasons.map((reason) => (
-                      <span key={reason}>{reason}</span>
-                    ))}
-                  </div>
-                )}
+                <div className="reasons">
+                  {restaurant.reasons.map((reason) => (
+                    <span key={reason}>{reason}</span>
+                  ))}
+                </div>
 
                 <div className="restaurant-links">
-                  <a
-                    href={restaurant.yelp_url}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <a href={restaurant.yelp_url} target="_blank" rel="noreferrer">
                     yelp
                   </a>
 
-                  <a
-                    href={restaurant.maps_url}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <a href={restaurant.maps_url} target="_blank" rel="noreferrer">
                     maps
                   </a>
 
-                  <a
-                    href={restaurant.tiktok_url}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <a href={restaurant.tiktok_url} target="_blank" rel="noreferrer">
                     tiktok
                   </a>
                 </div>
@@ -195,12 +276,6 @@ function App() {
             ))}
           </div>
         </section>
-      )}
-
-      {!loading && !error && restaurants.length === 0 && (
-        <p className="empty-state">
-          tell us what you're looking for and we'll narrow it down.
-        </p>
       )}
     </main>
   );

@@ -387,3 +387,27 @@ the backend creates the links using the restaurant name and location, then sends
 - how to create dynamic links
 - how to send more data through the api
 - how to use backend data for frontend actions
+
+## step 28 - adding pick for us
+
+i added a second search mode called "pick for us" where two people can enter different food and vibe preferences.
+
+the frontend now switches between a normal restaurant search and a shared preference search.
+
+## what i learned
+
+- how to switch between different ui modes in react
+- how to collect multiple sets of user preferences
+- how to change api requests based on the selected mode
+
+## step 29 - building the couple recommendation api
+
+i created a `/couple-recommendations` endpoint for the "pick for us" feature.
+
+the backend now compares two people's food and vibe preferences and gives restaurants points based on how well they match both people.
+
+## what i learned
+
+- how to handle two sets of user preferences
+- how to reuse recommendation logic
+- how to rank restaurants based on shared preferences

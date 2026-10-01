@@ -69,6 +69,28 @@ button {
   line-height: 1.6;
   color: #69645d;
 }
+.mode-switch {
+  display: inline-flex;
+  gap: 4px;
+  margin-bottom: 18px;
+  padding: 4px;
+  background: #e9e5de;
+  border-radius: 10px;
+}
+
+.mode-switch button {
+  padding: 8px 14px;
+  border-radius: 7px;
+  background: transparent;
+  color: #69645d;
+  cursor: pointer;
+}
+
+.mode-switch button.active {
+  background: #fff;
+  color: #191816;
+  font-weight: 600;
+}
 
 .search-form {
   display: grid;
