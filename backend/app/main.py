@@ -25,6 +25,14 @@ restaurants = [
     }
 ]
 
+vibe_groups = {
+    "chill": ["chill", "casual", "relaxed", "laid back", "cozy"],
+    "romantic": ["romantic", "intimate", "cozy", "date night"],
+    "upscale": ["upscale", "fancy", "elegant", "classy"],
+    "lively": ["lively", "fun", "energetic", "social"],
+    "sports": ["sports", "game", "bar", "lively", "casual"]
+}
+
 def score_restaurant(restaurant, preferred_cuisine, max_price, preferred_vibe):
     score = 0
     reasons = []
@@ -52,6 +60,11 @@ def recommend_restaurants(preferred_cuisine, max_price, preferred_vibe):
     recommendations = []
 
     for restaurant in restaurants:
+
+        # skip restaurants that are over the user's budget
+        if restaurant["price"] > max_price:
+            continue
+
         score, reasons = score_restaurant(
             restaurant,
             preferred_cuisine,
@@ -74,7 +87,21 @@ def recommend_restaurants(preferred_cuisine, max_price, preferred_vibe):
 
 
 preferred_cuisine = input("what type of food do you want? ")
-max_price = int(input("what is your max price level? enter 1, 2, or 3: "))
+
+while True:
+    try:
+        max_price = int(
+            input("what is your max price level? enter 1, 2, or 3: ")
+        )
+
+        if max_price in [1, 2, 3]:
+            break
+
+        print("please enter 1, 2, or 3.")
+
+    except ValueError:
+        print("please enter a number.")
+
 preferred_vibe = input("what kind of vibe do you want? ")
 
 results = recommend_restaurants(

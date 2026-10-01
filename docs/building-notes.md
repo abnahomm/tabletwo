@@ -135,3 +135,29 @@ now it can show reasons like:
 - how a function can return multiple values
 - how to store reasons with each result
 - how to make recommendations easier to understand
+
+## step 9 - validating user input
+
+i added input validation for the price level so the program does not crash if someone enters the wrong thing.
+
+now it keeps asking until the user enters 1, 2, or 3.
+
+## what i learned
+
+- how to use try and except
+- how to prevent bad input from crashing a program
+- how to keep asking for input until it is valid
+
+## step 10 - fixing price filtering
+
+while testing, i noticed expensive restaurants could still rank high even when the user picked a low budget.
+
+i changed the logic so restaurants above the selected price level are removed before scoring.
+
+i also started thinking about how vibe searches should understand related words instead of requiring an exact match.
+
+## what i learned
+
+- some preferences should be filters instead of scores
+- testing results can expose problems with recommendation logic
+- user input needs to be flexible instead of relying on exact words
