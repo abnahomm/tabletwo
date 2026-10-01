@@ -318,3 +318,16 @@ i also fixed an issue where the backend could not find my `.env` file and learne
 - how to return json from fastapi
 - how environment variables are loaded
 - how to debug a 500 server error
+
+## step 23 - adding scoring to the api
+
+i moved the restaurant scoring logic into the `/recommendations` api endpoint.
+
+the backend now filters by budget, scores restaurants using rating, price, and vibe, explains why each restaurant matched, and sorts the results from highest score to lowest.
+
+## what i learned
+
+- how to move program logic into an api endpoint
+- how to score api results before returning them
+- how to sort json results by recommendation score
+- how the backend can handle most of the recommendation logic
