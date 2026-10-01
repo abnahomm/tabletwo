@@ -12,4 +12,4 @@ node_modules/
 dist/
 
 # mac
-.DS_Store
+.DS_Store# project files

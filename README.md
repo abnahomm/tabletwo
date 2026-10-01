@@ -1,23 +1,44 @@
-# tabletwo
+# TableTwo
 
-tabletwo is a date night restaurant app i wanted to build because me and my girlfriend always take forever trying to figure out where to eat. (mainly her fault)
+TableTwo is a Python restaurant recommendation tool made for couples who cannot decide where to eat.
 
-instead of checking a bunch of different apps tabletwo helps narrow places down based on location, food, price, ratings, and the kind of vibe you're looking for.
+The program uses the Yelp API to find real restaurants and ranks them based on both people's preferences.
 
-## planned features
+## What it does
 
-- search restaurants by location
-- filter by cuisine and price
-- rank restaurants based on preferences
-- view restaurant ratings and reviews
-- open directions in maps
-- search restaurants on tiktok
-- save favorite spots
+TableTwo asks for:
 
-## planned tech stack
+- location
+- person 1 food preference
+- person 1 vibe
+- person 2 food preference
+- person 2 vibe
+- maximum price
 
-- python
-- fastapi
-- react
-- typescript
-- postgresql
+It then:
+
+1. searches Yelp for both food preferences
+2. combines the restaurant results
+3. removes restaurants over the selected budget
+4. scores restaurants based on rating, food preferences, and vibe
+5. sorts the results
+6. prints the top recommendations
+
+## Technologies
+
+- Python
+- Yelp API
+- Requests
+- python-dotenv
+
+## Project Structure
+
+```text
+tabletwo/
+├── main.py
+├── recommender.py
+├── yelp_api.py
+├── requirements.txt
+├── .env
+├── .gitignore
+└── README.md
