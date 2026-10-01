@@ -161,3 +161,15 @@ i also started thinking about how vibe searches should understand related words 
 - some preferences should be filters instead of scores
 - testing results can expose problems with recommendation logic
 - user input needs to be flexible instead of relying on exact words
+
+## step 11 - matching related vibes
+
+i changed the vibe logic so users do not have to type the exact same word stored for a restaurant.
+
+for example, typing "relaxed" can still match a restaurant tagged as "chill" or "casual" if those words are in the same vibe group.
+
+## what i learned
+
+- how to group related words
+- how to loop through nested lists
+- how to make user input more flexible

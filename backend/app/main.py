@@ -45,7 +45,19 @@ def score_restaurant(restaurant, preferred_cuisine, max_price, preferred_vibe):
         score += 2
         reasons.append("within budget")
 
-    if preferred_vibe.lower() in restaurant["vibes"]:
+    matched_vibe = False
+
+    for group, related_words in vibe_groups.items():
+        if preferred_vibe.lower() in related_words:
+            for restaurant_vibe in restaurant["vibes"]:
+                if restaurant_vibe in related_words:
+                    matched_vibe = True
+                    break
+
+        if matched_vibe:
+            break
+
+    if matched_vibe:
         score += 3
         reasons.append("matches vibe")
 
