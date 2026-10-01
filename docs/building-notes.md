@@ -331,3 +331,18 @@ the backend now filters by budget, scores restaurants using rating, price, and v
 - how to score api results before returning them
 - how to sort json results by recommendation score
 - how the backend can handle most of the recommendation logic
+
+## step 24 - starting the frontend
+
+i created a react and typescript frontend for tabletwo.
+
+i added a form for location, cuisine, budget, and vibe and connected each input to react state.
+
+the form now collects the user's preferences correctly and prints them in the browser console.
+
+## what i learned
+
+- how to create a react frontend
+- how react state stores form values
+- how to handle form submissions
+- how to test frontend input in the browser console
