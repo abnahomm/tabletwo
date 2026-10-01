@@ -173,3 +173,16 @@ for example, typing "relaxed" can still match a restaurant tagged as "chill" or 
 - how to group related words
 - how to loop through nested lists
 - how to make user input more flexible
+
+## step 12 - using real restaurant data
+
+i connected tabletwo to the yelp api so i can search real restaurants instead of using only the sample ones i added myself.
+
+right now the search sends a location and cuisine to yelp and gets restaurant names and ratings back.
+
+## what i learned
+
+- how to make an api request with python
+- how to send search parameters
+- how to read json data
+- how to keep my api key outside of the code
