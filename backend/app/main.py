@@ -27,27 +27,32 @@ restaurants = [
 
 def score_restaurant(restaurant, preferred_cuisine, max_price, preferred_vibe):
     score = 0
+    reasons = []
 
     if restaurant["cuisine"].lower() == preferred_cuisine.lower():
         score += 5
+        reasons.append("matches cuisine")
 
     if restaurant["price"] <= max_price:
         score += 2
+        reasons.append("within budget")
 
     if preferred_vibe.lower() in restaurant["vibes"]:
         score += 3
+        reasons.append("matches vibe")
 
     if restaurant["rating"] >= 4.5:
         score += 2
+        reasons.append("high rating")
 
-    return score
+    return score, reasons
 
 
 def recommend_restaurants(preferred_cuisine, max_price, preferred_vibe):
     recommendations = []
 
     for restaurant in restaurants:
-        score = score_restaurant(
+        score, reasons = score_restaurant(
             restaurant,
             preferred_cuisine,
             max_price,
@@ -56,6 +61,7 @@ def recommend_restaurants(preferred_cuisine, max_price, preferred_vibe):
 
         restaurant_result = restaurant.copy()
         restaurant_result["score"] = score
+        restaurant_result["reasons"] = reasons
 
         recommendations.append(restaurant_result)
 
@@ -85,4 +91,9 @@ for restaurant in results:
         "- score:",
         restaurant["score"]
     )
+
+    for reason in restaurant["reasons"]:
+        print("  -", reason)
+
+    print()
 

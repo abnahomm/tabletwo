@@ -119,3 +119,19 @@ this helped me understand that recommendation systems are not only about adding 
 - why some preferences should matter more than others
 - how testing different inputs can expose problems in the logic
 - how recommendation systems need tuning to give useful results
+
+## step 8 - explaining the score
+
+i changed the program so it shows why each restaurant got its score instead of only showing the number.
+
+now it can show reasons like:
+- matches cuisine
+- within budget
+- matches vibe
+- high rating
+
+## what i learned
+
+- how a function can return multiple values
+- how to store reasons with each result
+- how to make recommendations easier to understand
