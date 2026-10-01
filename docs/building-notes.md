@@ -435,3 +435,15 @@ before, an empty response could make the app feel broken. now the page tells the
 - how to track whether a user has searched
 - how to handle empty api results
 - how small ui states can make an app feel more complete
+
+## step 32 - improving vibe matching
+
+i improved the vibe matching logic so it checks more than just the restaurant's mapped categories.
+
+the app can now also look at the restaurant name and category text when deciding whether a place matches a requested vibe.
+
+## what i learned
+
+- how to combine multiple pieces of text for matching
+- how to make recommendation logic more flexible
+- how to improve matching without adding a complicated model

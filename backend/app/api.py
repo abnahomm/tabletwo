@@ -97,8 +97,13 @@ def get_restaurant_vibes(categories):
     return restaurant_vibes
 
 
-def vibe_matches(preferred_vibe, restaurant_vibes):
+def vibe_matches(
+    preferred_vibe,
+    restaurant_vibes,
+    restaurant_text=""
+):
     preferred_vibe = preferred_vibe.lower()
+    restaurant_text = restaurant_text.lower()
 
     for related_words in VIBE_GROUPS.values():
         user_match = any(
@@ -106,12 +111,20 @@ def vibe_matches(preferred_vibe, restaurant_vibes):
             for word in related_words
         )
 
-        restaurant_match = any(
+        restaurant_vibe_match = any(
             vibe in related_words
             for vibe in restaurant_vibes
         )
 
-        if user_match and restaurant_match:
+        restaurant_text_match = any(
+            word in restaurant_text
+            for word in related_words
+        )
+
+        if user_match and (
+            restaurant_vibe_match
+            or restaurant_text_match
+        ):
             return True
 
     return False
@@ -249,11 +262,22 @@ def get_recommendations(
 
         categories = get_categories(restaurant)
 
+        restaurant_text = " ".join(
+            [
+                restaurant["name"],
+                *categories
+            ]
+        )
+
         restaurant_vibes = get_restaurant_vibes(
             categories
         )
 
-        if vibe_matches(vibe, restaurant_vibes):
+        if vibe_matches(
+            vibe,
+            restaurant_vibes,
+            restaurant_text
+        ):
             score += 3
             reasons.append("matches vibe")
 
@@ -311,6 +335,13 @@ def get_couple_recommendations(
         categories = get_categories(restaurant)
         category_text = " ".join(categories)
 
+        restaurant_text = " ".join(
+            [
+                restaurant["name"],
+                *categories
+            ]
+        )
+
         if cuisine_one.lower() in category_text:
             score += 3
             reasons.append("matches person 1 food")
@@ -323,11 +354,19 @@ def get_couple_recommendations(
             categories
         )
 
-        if vibe_matches(vibe_one, restaurant_vibes):
+        if vibe_matches(
+            vibe_one,
+            restaurant_vibes,
+            restaurant_text
+        ):
             score += 2
             reasons.append("matches person 1 vibe")
 
-        if vibe_matches(vibe_two, restaurant_vibes):
+        if vibe_matches(
+            vibe_two,
+            restaurant_vibes,
+            restaurant_text
+        ):
             score += 2
             reasons.append("matches person 2 vibe")
 
