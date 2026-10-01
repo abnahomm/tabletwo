@@ -14,7 +14,13 @@ type Restaurant = {
 };
 
 function App() {
+  function getMatchLabel(score: number) {
+  if (score >= 10) return "great match";
+  if (score >= 7) return "good match";
+  return "possible match";
+}
   const [mode, setMode] = useState<"single" | "couple">("single");
+  const [missionOpen, setMissionOpen] = useState(false);
 
   const [location, setLocation] = useState("");
   const [maxPrice, setMaxPrice] = useState("2");
@@ -36,10 +42,10 @@ function App() {
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
 
-    setHasSearched(true);
     setLoading(true);
     setError("");
     setRestaurants([]);
+    setHasSearched(true);
 
     try {
       let params;
@@ -76,12 +82,9 @@ function App() {
       }
 
       const data = await response.json();
-
       setRestaurants(data.restaurants);
     } catch {
-      setError(
-        "couldn't load restaurants right now. make sure the backend is running and try again."
-      );
+      setError("couldn't load restaurants right now. try again in a second.");
     } finally {
       setLoading(false);
     }
@@ -95,245 +98,239 @@ function App() {
   }
 
   return (
-    <main className="page">
+    <main className="app-shell">
       <section className="hero">
-        <p className="eyebrow">date night, simplified</p>
+        <div className="background-scene" />
+        <div className="scene-overlay" />
+        <div className="water-motion" />
+        <div className="stars stars-one" />
+        <div className="stars stars-two" />
+        <div className="city-lights lights-one" />
+        <div className="city-lights lights-two" />
+        <div className="candle-glow candle-glow-one" />
+        <div className="candle-glow candle-glow-two" />
 
-        <h1>tabletwo</h1>
+        <div className="hero-ui">
+          <header className="top-bar">
+            <div className="brand-mini">tabletwo</div>
 
-        <p className="subtitle">
-          find somewhere to eat without checking five different apps
-        </p>
+            <button
+              type="button"
+              className="mission-button"
+              onClick={() => setMissionOpen(!missionOpen)}
+            >
+              mission
+            </button>
+          </header>
 
-        <div className="mode-switch" aria-label="search mode">
-          <button
-            type="button"
-            className={mode === "single" ? "active" : ""}
-            onClick={() => switchMode("single")}
-          >
-            find a spot
-          </button>
+          {missionOpen && (
+            <div className="mission-card">
+              <p className="mission-label">mission</p>
+              <p className="mission-text">
+                for couples who spend 20 minutes tryna figure out what to eat, use tabletwo.
+              </p>
+            </div>
+          )}
 
-          <button
-            type="button"
-            className={mode === "couple" ? "active" : ""}
-            onClick={() => switchMode("couple")}
-          >
-            pick for us
-          </button>
-        </div>
+          <div className="hero-content">
+            <p className="eyebrow"></p>
 
-        <form
-          className={`search-form ${
-            mode === "couple" ? "couple-form" : ""
-          }`}
-          onSubmit={handleSubmit}
-        >
-          <div className="field">
-            <label htmlFor="location">city</label>
-            <input
-              id="location"
-              type="text"
-              value={location}
-              onChange={(event) => setLocation(event.target.value)}
-              placeholder="orlando, fl"
-              required
-            />
+            <h1>tabletwo</h1>
+
+            <p className="subtitle">
+            find the spot and go.
+            </p>
+
+            <div className="mode-switch">
+              <button
+                type="button"
+                className={mode === "single" ? "active" : ""}
+                onClick={() => switchMode("single")}
+              >
+                find a spot
+              </button>
+
+              <button
+                type="button"
+                className={mode === "couple" ? "active" : ""}
+                onClick={() => switchMode("couple")}
+              >
+                pick for us
+              </button>
+            </div>
+
+            <form className="search-panel" onSubmit={handleSubmit}>
+              <div className="field">
+                <label>where</label>
+                <input
+                  value={location}
+                  onChange={(event) => setLocation(event.target.value)}
+                  placeholder="orlando, fl"
+                  required
+                />
+              </div>
+
+              {mode === "single" ? (
+                <>
+                  <div className="field">
+                    <label>food</label>
+                    <input
+                      value={cuisine}
+                      onChange={(event) => setCuisine(event.target.value)}
+                      placeholder="japanese"
+                      required
+                    />
+                  </div>
+
+                  <div className="field">
+                    <label>vibe</label>
+                    <input
+                      value={vibe}
+                      onChange={(event) => setVibe(event.target.value)}
+                      placeholder="romantic, chill..."
+                      required
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="field">
+                    <label>person 1 food</label>
+                    <input
+                      value={cuisineOne}
+                      onChange={(event) => setCuisineOne(event.target.value)}
+                      placeholder="italian"
+                      required
+                    />
+                  </div>
+
+                  <div className="field">
+                    <label>person 1 vibe</label>
+                    <input
+                      value={vibeOne}
+                      onChange={(event) => setVibeOne(event.target.value)}
+                      placeholder="romantic"
+                      required
+                    />
+                  </div>
+
+                  <div className="field">
+                    <label>person 2 food</label>
+                    <input
+                      value={cuisineTwo}
+                      onChange={(event) => setCuisineTwo(event.target.value)}
+                      placeholder="japanese"
+                      required
+                    />
+                  </div>
+
+                  <div className="field">
+                    <label>person 2 vibe</label>
+                    <input
+                      value={vibeTwo}
+                      onChange={(event) => setVibeTwo(event.target.value)}
+                      placeholder="chill"
+                      required
+                    />
+                  </div>
+                </>
+              )}
+
+              <div className="field budget">
+                <label>budget</label>
+                <select
+                  value={maxPrice}
+                  onChange={(event) => setMaxPrice(event.target.value)}
+                >
+                  <option value="1">$</option>
+                  <option value="2">$$</option>
+                  <option value="3">$$$</option>
+                </select>
+              </div>
+
+              <button className="search-button" type="submit" disabled={loading}>
+                {loading
+                  ? "finding..."
+                  : mode === "single"
+                  ? "find a spot"
+                  : "pick for us"}
+              </button>
+            </form>
+
+            {error && <p className="error">{error}</p>}
           </div>
+        </div>
+      </section>
 
-          {mode === "single" ? (
+      {hasSearched && (
+        <section className="results-section">
+          {restaurants.length > 0 && (
             <>
-              <div className="field">
-                <label htmlFor="cuisine">food</label>
-                <input
-                  id="cuisine"
-                  type="text"
-                  value={cuisine}
-                  onChange={(event) => setCuisine(event.target.value)}
-                  placeholder="japanese"
-                  required
-                />
+              <div className="results-header">
+                <div>
+                  <p>your night</p>
+                  <h2>best matches</h2>
+                </div>
+
+                <span>{restaurants.length} places</span>
               </div>
 
-              <div className="field">
-                <label htmlFor="vibe">vibe</label>
-                <input
-                  id="vibe"
-                  type="text"
-                  value={vibe}
-                  onChange={(event) => setVibe(event.target.value)}
-                  placeholder="romantic, chill..."
-                  required
-                />
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="field">
-                <label htmlFor="cuisine-one">person 1 food</label>
-                <input
-                  id="cuisine-one"
-                  type="text"
-                  value={cuisineOne}
-                  onChange={(event) => setCuisineOne(event.target.value)}
-                  placeholder="italian"
-                  required
-                />
-              </div>
+              <div className="restaurant-list">
+                {restaurants.map((restaurant, index) => (
+                  <article className="restaurant-row" key={restaurant.yelp_url}>
+                    <div className="rank">
+                      {String(index + 1).padStart(2, "0")}
+                    </div>
 
-              <div className="field">
-                <label htmlFor="vibe-one">person 1 vibe</label>
-                <input
-                  id="vibe-one"
-                  type="text"
-                  value={vibeOne}
-                  onChange={(event) => setVibeOne(event.target.value)}
-                  placeholder="romantic"
-                  required
-                />
-              </div>
+                    <div className="restaurant-info">
+                      <div className="restaurant-title">
+                        <h3>{restaurant.name}</h3>
+                        <span className="match-score">
+                          {getMatchLabel(restaurant.score)} 
+                        </span>
+                      </div>
 
-              <div className="field">
-                <label htmlFor="cuisine-two">person 2 food</label>
-                <input
-                  id="cuisine-two"
-                  type="text"
-                  value={cuisineTwo}
-                  onChange={(event) => setCuisineTwo(event.target.value)}
-                  placeholder="japanese"
-                  required
-                />
-              </div>
+                      <p className="restaurant-meta">
+                        {restaurant.rating} ★
+                        <span> · </span>
+                        {restaurant.price}
+                      </p>
 
-              <div className="field">
-                <label htmlFor="vibe-two">person 2 vibe</label>
-                <input
-                  id="vibe-two"
-                  type="text"
-                  value={vibeTwo}
-                  onChange={(event) => setVibeTwo(event.target.value)}
-                  placeholder="chill"
-                  required
-                />
+                      <p className="address">{restaurant.address}</p>
+
+                      <div className="reasons">
+                        {restaurant.reasons.map((reason) => (
+                          <span key={reason}>{reason}</span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="links">
+                      <a href={restaurant.yelp_url} target="_blank" rel="noreferrer">
+                        yelp ↗
+                      </a>
+
+                      <a href={restaurant.maps_url} target="_blank" rel="noreferrer">
+                        maps ↗
+                      </a>
+
+                      <a href={restaurant.tiktok_url} target="_blank" rel="noreferrer">
+                        tiktok ↗
+                      </a>
+                    </div>
+                  </article>
+                ))}
               </div>
             </>
           )}
 
-          <div className="field budget-field">
-            <label htmlFor="budget">budget</label>
-            <select
-              id="budget"
-              value={maxPrice}
-              onChange={(event) => setMaxPrice(event.target.value)}
-            >
-              <option value="1">$</option>
-              <option value="2">$$</option>
-              <option value="3">$$$</option>
-            </select>
-          </div>
-
-          <button className="search-button" type="submit" disabled={loading}>
-            {loading
-              ? "searching..."
-              : mode === "single"
-              ? "find restaurants"
-              : "pick for us"}
-          </button>
-        </form>
-
-        {error && <p className="error">{error}</p>}
-      </section>
-
-      {restaurants.length > 0 && (
-        <section className="results">
-          <div className="results-heading">
-            <div>
-              <p className="results-label">recommendations</p>
-              <h2>your matches</h2>
+          {!loading && !error && restaurants.length === 0 && (
+            <div className="no-results">
+              <p>nothing good came up.</p>
+              <span>try changing the food, vibe, or budget.</span>
             </div>
-
-            <p>
-              {restaurants.length}{" "}
-              {restaurants.length === 1 ? "restaurant" : "restaurants"} found
-            </p>
-          </div>
-
-          <div className="restaurant-grid">
-            {restaurants.map((restaurant, index) => (
-              <article className="restaurant-card" key={restaurant.yelp_url}>
-                <div className="card-top">
-                  <div className="restaurant-main">
-                    <p className="ranking">#{index + 1}</p>
-
-                    <h3>{restaurant.name}</h3>
-
-                    <p className="meta">
-                      <span>{restaurant.rating} ★</span>
-                      <span>·</span>
-                      <span>{restaurant.price}</span>
-                    </p>
-                  </div>
-
-                  <div className="score">
-                    <span>{restaurant.score}</span>
-                    <small>match</small>
-                  </div>
-                </div>
-
-                <p className="address">{restaurant.address}</p>
-
-                {restaurant.reasons.length > 0 && (
-                  <div className="reasons">
-                    {restaurant.reasons.map((reason) => (
-                      <span key={reason}>{reason}</span>
-                    ))}
-                  </div>
-                )}
-
-                <div className="restaurant-links">
-                  <a
-                    href={restaurant.yelp_url}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    yelp
-                  </a>
-
-                  <a
-                    href={restaurant.maps_url}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    maps
-                  </a>
-
-                  <a
-                    href={restaurant.tiktok_url}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    tiktok
-                  </a>
-                </div>
-              </article>
-            ))}
-          </div>
+          )}
         </section>
-      )}
-
-      {!loading && !error && restaurants.length === 0 && !hasSearched && (
-        <p className="empty-state">
-          tell us what you're looking for and we'll narrow it down.
-        </p>
-      )}
-
-      {!loading && !error && restaurants.length === 0 && hasSearched && (
-        <div className="no-results">
-          <h2>no matches yet</h2>
-          <p>
-            try a different cuisine, budget, or vibe and we'll search again.
-          </p>
-        </div>
       )}
     </main>
   );
