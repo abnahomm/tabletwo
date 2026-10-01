@@ -59,3 +59,28 @@ i did it this way because a place can still be a good option even if it does not
 - how to pass values between functions
 - how to sort data based on a score
 - how recommendation systems can rank choices instead of only filtering them
+
+## step 5 - getting preferences from the user
+
+before this step, i had the preferences hardcoded into the program.
+
+for example, i was manually telling it to look for italian food with a certain price and vibe.
+
+i changed that so the program now asks the user what they want when it runs.
+
+the user can enter:
+- the type of food they want
+- their maximum price level
+- the kind of vibe they are looking for
+
+those answers are then passed into the recommendation function and used to score the restaurants.
+
+i did this because i wanted the program to start feeling more like an actual app instead of just testing fixed values in the code.
+
+## what i learned
+
+- how to collect user input in python
+- how to store user answers in variables
+- how to convert text input into a number
+- how to pass user input into functions
+- how user preferences can change the results the program returns

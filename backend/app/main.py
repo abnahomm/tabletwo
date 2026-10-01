@@ -67,11 +67,17 @@ def recommend_restaurants(preferred_cuisine, max_price, preferred_vibe):
     return recommendations
 
 
+preferred_cuisine = input("what type of food do you want? ")
+max_price = int(input("what is your max price level? enter 1, 2, or 3: "))
+preferred_vibe = input("what kind of vibe do you want? ")
+
 results = recommend_restaurants(
-    "italian",
-    3,
-    "romantic"
+    preferred_cuisine,
+    max_price,
+    preferred_vibe
 )
+
+print("\nrecommended restaurants:\n")
 
 for restaurant in results:
     print(
@@ -79,3 +85,4 @@ for restaurant in results:
         "- score:",
         restaurant["score"]
     )
+
