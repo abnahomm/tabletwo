@@ -4,6 +4,10 @@ TableTwo is a Python restaurant recommendation tool made for couples who cannot 
 
 The program uses the Yelp API to find real restaurants and ranks them based on both people's preferences.
 
+## live demo
+
+[try tabletwo] https://tabletwo.streamlit.app/
+
 ## What it does
 
 TableTwo asks for:
@@ -44,6 +48,3 @@ tabletwo/
 └── README.md
 
 
-## live demo
-
-[try tabletwo] https://tabletwo.streamlit.app/
