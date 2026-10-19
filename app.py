@@ -1,3 +1,4 @@
+
 import base64
 from pathlib import Path
 
@@ -42,7 +43,13 @@ st.markdown(
         text-transform: lowercase;
     }}
 
-    h1, h2, h3, p, label, div {{
+    /* White text for the main app, not every div */
+    .stApp h1,
+    .stApp h2,
+    .stApp h3,
+    .stApp p,
+    .stApp label,
+    .stApp [data-testid="stMarkdownContainer"] {{
         color: white !important;
     }}
 
@@ -80,19 +87,94 @@ st.markdown(
         text-decoration: underline !important;
     }}
 
-    input {{
+    /* INPUT FIELDS: consistent in light and dark mode */
+
+    .stTextInput input {{
         border-radius: 10px !important;
-        border: 1px solid rgba(255,255,255,0.20) !important;
-        background-color: rgba(18, 20, 32, 0.78) !important;
-        color: white !important;
+        border: 1px solid #cbd5e1 !important;
+        background-color: #ffffff !important;
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+        caret-color: #111827 !important;
     }}
+
+    .stTextInput input::placeholder {{
+        color: #64748b !important;
+        -webkit-text-fill-color: #64748b !important;
+        opacity: 1 !important;
+    }}
+
+    .stTextInput [data-baseweb="input"] {{
+        background-color: #ffffff !important;
+        border-radius: 10px !important;
+    }}
+
+    /* SELECTBOX: white background, dark text */
 
     div[data-baseweb="select"] > div {{
         border-radius: 10px !important;
-        border: 1px solid rgba(255,255,255,0.20) !important;
-        background-color: rgba(18, 20, 32, 0.78) !important;
-        color: white !important;
+        border: 1px solid #cbd5e1 !important;
+        background-color: #ffffff !important;
+        color: #111827 !important;
     }}
+
+    div[data-baseweb="select"] {{
+        color: #111827 !important;
+    }}
+
+    div[data-baseweb="select"] span {{
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+    }}
+
+    div[data-baseweb="select"] input {{
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+    }}
+
+    div[data-baseweb="select"] svg {{
+        fill: #111827 !important;
+        color: #111827 !important;
+    }}
+
+    /* DROPDOWN OPTIONS: readable on all devices */
+
+    div[data-baseweb="popover"] {{
+        color: #111827 !important;
+    }}
+
+    div[data-baseweb="popover"] [data-baseweb="menu"],
+    div[data-baseweb="popover"] [role="listbox"],
+    ul[role="listbox"] {{
+        background-color: #ffffff !important;
+        color: #111827 !important;
+    }}
+
+    div[data-baseweb="popover"] [role="option"],
+    li[role="option"] {{
+        background-color: #ffffff !important;
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+    }}
+
+    div[data-baseweb="popover"] [role="option"] *,
+    li[role="option"] * {{
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+    }}
+
+    div[data-baseweb="popover"] [role="option"]:hover,
+    li[role="option"]:hover {{
+        background-color: #e2e8f0 !important;
+    }}
+
+    div[data-baseweb="popover"] [aria-selected="true"],
+    li[aria-selected="true"] {{
+        background-color: #dbeafe !important;
+        color: #111827 !important;
+    }}
+
+    /* BUTTONS: keep the original dark aesthetic */
 
     .stButton > button,
     .stLinkButton > a {{
@@ -110,6 +192,8 @@ st.markdown(
         background-color: rgba(28, 35, 58, 0.92) !important;
     }}
 
+    /* RESTAURANT RESULT CARDS */
+
     div[data-testid="stVerticalBlockBorderWrapper"] {{
         border-radius: 16px !important;
         border: 1px solid rgba(255,255,255,0.14) !important;
@@ -120,6 +204,7 @@ st.markdown(
     hr {{
         border-color: rgba(255,255,255,0.16) !important;
     }}
+
     </style>
     """,
     unsafe_allow_html=True
