@@ -1,6 +1,7 @@
 
 import base64
 from pathlib import Path
+from html import escape
 
 import streamlit as st
 
@@ -43,7 +44,6 @@ st.markdown(
         text-transform: lowercase;
     }}
 
-    /* White text for the main app, not every div */
     .stApp h1,
     .stApp h2,
     .stApp h3,
@@ -87,7 +87,7 @@ st.markdown(
         text-decoration: underline !important;
     }}
 
-    /* INPUT FIELDS: consistent in light and dark mode */
+    /* TEXT INPUTS */
 
     .stTextInput input {{
         border-radius: 10px !important;
@@ -109,7 +109,7 @@ st.markdown(
         border-radius: 10px !important;
     }}
 
-    /* SELECTBOX: white background, dark text */
+    /* SELECTBOXES */
 
     div[data-baseweb="select"] > div {{
         border-radius: 10px !important;
@@ -137,7 +137,7 @@ st.markdown(
         color: #111827 !important;
     }}
 
-    /* DROPDOWN OPTIONS: readable on all devices */
+    /* DROPDOWN MENUS */
 
     div[data-baseweb="popover"] {{
         color: #111827 !important;
@@ -174,7 +174,7 @@ st.markdown(
         color: #111827 !important;
     }}
 
-    /* BUTTONS: keep the original dark aesthetic */
+    /* BUTTONS */
 
     .stButton > button,
     .stLinkButton > a {{
@@ -228,6 +228,17 @@ location = st.text_input(
 )
 
 
+restaurant_type = st.selectbox(
+    "restaurant type",
+    [
+        "all restaurants",
+        "fast food / quick bites",
+        "sit-down restaurants"
+    ],
+    key="restaurant_type"
+)
+
+
 st.divider()
 
 
@@ -248,7 +259,8 @@ vibe_one = st.selectbox(
         "upscale",
         "casual"
     ],
-    key="vibe_one"
+    key="vibe_one",
+    disabled=(restaurant_type == "fast food / quick bites")
 )
 
 
@@ -272,7 +284,8 @@ vibe_two = st.selectbox(
         "upscale",
         "casual"
     ],
-    key="vibe_two"
+    key="vibe_two",
+    disabled=(restaurant_type == "fast food / quick bites")
 )
 
 
@@ -301,27 +314,30 @@ if st.button(
 ):
 
     if (
-        not location
-        or not cuisine_one
-        or not cuisine_two
+        not location.strip()
+        or not cuisine_one.strip()
+        or not cuisine_two.strip()
     ):
         st.warning(
             "please enter a location and both food preferences."
         )
 
     else:
-        with st.spinner(
-            "finding restaurants..."
-        ):
+        with st.spinner("finding restaurants..."):
 
             try:
+                fast_food_mode = (
+                    restaurant_type == "fast food / quick bites"
+                )
+
                 restaurants = recommend_restaurants(
                     location.strip(),
                     cuisine_one.strip().lower(),
                     cuisine_two.strip().lower(),
-                    vibe_one,
-                    vibe_two,
-                    budget_map[budget]
+                    None if fast_food_mode else vibe_one,
+                    None if fast_food_mode else vibe_two,
+                    budget_map[budget],
+                    restaurant_type
                 )
 
             except Exception as error:
@@ -358,15 +374,22 @@ if st.button(
                 else:
                     match = "👍 possible match"
 
-                with st.container(
-                    border=True
-                ):
+                with st.container(border=True):
+
+                    restaurant_name = escape(
+                        str(restaurant["name"])
+                    )
+
+                    restaurant_url = escape(
+                        str(restaurant["url"]),
+                        quote=True
+                    )
 
                     st.markdown(
                         f'''
                         <h3 class="restaurant-name">
-                            {index}. <a href="{restaurant["url"]}" target="_blank">
-                            {restaurant["name"]}
+                            {index}. <a href="{restaurant_url}" target="_blank" rel="noopener noreferrer">
+                            {restaurant_name}
                             </a>
                         </h3>
                         ''',
@@ -385,21 +408,16 @@ if st.button(
                             f"💵 price: {restaurant['price']}"
                         )
 
-                    st.write(
-                        f"**{match}**"
-                    )
+                    st.write(f"**{match}**")
 
-                    st.link_button(
-                        "view on yelp",
-                        restaurant["url"],
-                        use_container_width=True
-                    )
+                    if restaurant["url"]:
+                        st.link_button(
+                            "view on yelp",
+                            restaurant["url"],
+                            use_container_width=True
+                        )
 
-                    st.write(
-                        "**why it matches:**"
-                    )
+                    st.write("**why it matches:**")
 
                     for reason in restaurant["reasons"]:
-                        st.write(
-                            f"• {reason.lower()}"
-                        )
+                        st.write(f"• {reason.lower()}")
